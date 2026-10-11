@@ -1635,7 +1635,17 @@ async function writeEpub(book){
   const title = book.title || 'Untitled';
   const chapters = book.chapters.length ? book.chapters : [{ title: '', html: '<p></p>' }];
   const bkMap = new Map();
-  for (const [id, im] of book.images) bkMap.set(id, `../images/${id}.${MIME_EXT[im.mime] || 'bin'}`);
+  const usedImgs = new Set();
+  for (const c of chapters){
+    const re = /src="bkimg:([^"]+)"/g;
+    let mm;
+    while ((mm = re.exec(c.html))) usedImgs.add(mm[1]);
+  }
+  for (const [id, im] of book.images){
+    if (!usedImgs.has(id)) continue;                       /* 只打包被章节引用的图 */
+    bkMap.set(id, `../images/${id}.${MIME_EXT[im.mime] || 'bin'}`);
+  }
+  /* bkMap needs entries for ALL used ids before chapter serialization */
   const manifest = [], spine = [], navLis = [], ncxPts = [];
   chapters.forEach((c, i) => {
     const id = 'ch' + (i + 1), href = `text/${id}.xhtml`;
@@ -1650,6 +1660,7 @@ async function writeEpub(book){
     ncxPts.push(`<navPoint id="np${i + 1}" playOrder="${i + 1}"><navLabel><text>${xmlEsc(ttl)}</text></navLabel><content src="${href}"/></navPoint>`);
   });
   for (const [id, im] of book.images){
+    if (!usedImgs.has(id)) continue;
     const ext = MIME_EXT[im.mime] || 'bin';
     zip.file(`OEBPS/images/${id}.${ext}`, im.bytes);
     manifest.push(`<item id="img-${id}" href="images/${id}.${ext}" media-type="${im.mime}"/>`);
