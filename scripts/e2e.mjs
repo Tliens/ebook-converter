@@ -61,8 +61,8 @@ const navLang = await page.evaluate(() => (navigator.language || '').toLowerCase
 const expectedLang = navLang.startsWith('zh') ? 'zh-CN' : 'en';
 ok(await page.evaluate(l => document.documentElement.lang === l, expectedLang), `default lang follows browser (${navLang})`);
 
-console.log('3. batch conversion: epub/mobi/fb2/pdf/docx/txt/md/html → EPUB');
-const files = ['sample.epub', 'sample.mobi', 'sample.fb2', 'sample.pdf', 'sample.docx', 'sample.txt', 'sample.md', 'sample.html'];
+console.log('3. batch conversion: epub/mobi/fb2/pdf/docx/txt/md/html/collection → EPUB');
+const files = ['sample.epub', 'sample.mobi', 'sample.fb2', 'sample.pdf', 'sample.docx', 'sample.txt', 'sample.md', 'sample.html', 'collection.mobi'];
 const client = await page.createCDPSession();
 await client.send('Browser.setDownloadBehavior', { behavior: 'allow', downloadPath: OUT });
 const added = await page.evaluate(async (names) => {
@@ -75,17 +75,21 @@ const added = await page.evaluate(async (names) => {
   window.__BM.addFiles(files);
   return window.__BM.state.items.map(i => ({ name: i.name, status: i.status }));
 }, files);
-ok(added.length === 8 && added.every(i => i.status === 'wait'), '8 files queued', JSON.stringify(added));
+ok(added.length === 9 && added.every(i => i.status === 'wait'), '9 files queued', JSON.stringify(added));
 await page.click('#goBtn');
 await page.waitForFunction(() => window.__BM && window.__BM.state.busy === false, { timeout: 120000 });
 await new Promise(r => setTimeout(r, 500));
-const finalStates = await page.evaluate(() => window.__BM.state.items.map(i => ({ name: i.name, status: i.status, reason: i.reason, reasonText: i.reasonText })));
+const finalStates = await page.evaluate(() => window.__BM.state.items.map(i => ({ name: i.name, status: i.status, reason: i.reason, reasonText: i.reasonText, splitCount: i.splitCount })));
 for (const s of finalStates){
   ok(s.status === 'ok', `${s.name} → ok`, JSON.stringify(s));
 }
-ok(finalStates.filter(s => s.status === 'ok').length === 8, 'all 8 converted');
+ok(finalStates.filter(s => s.status === 'ok').length === 9, 'all 9 converted');
+const collState = finalStates.find(s => s.name === 'collection.mobi');
+ok(collState && collState.splitCount === 2, 'collection auto-split into 2', JSON.stringify(collState));
 const resultRows = await page.$$eval('#results .ritem', els => els.length);
-ok(resultRows === 8, '8 result rows', resultRows);
+ok(resultRows === 10, '10 result rows (8 single + 2 split)', resultRows);
+const splitNames = await page.$$eval('#results .ritem .rname', els => els.map(e => e.textContent).filter(n => n.includes('红楼梦') || n.includes('西游记')));
+ok(splitNames.length === 2, 'split outputs named from TOC', JSON.stringify(splitNames));
 
 console.log('4. download check (first result)');
 const dlHref = await page.$eval('#results .ritem a', a => a.href);

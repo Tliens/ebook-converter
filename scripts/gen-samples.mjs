@@ -87,5 +87,23 @@ async function makeDocx(){
 }
 await makeDocx();
 
+/* collection (anthology) sample: two books with numbering restart + TOC naming */
+function sampleCollection(){
+  const b = E.newBook('双书合集样本', '测试编辑部', 'zh');
+  const mk = (t, body) => ({ title: t, html: body || `<p>${t}的内容段落。</p>` });
+  b.chapters = [
+    mk('总目录', '<p>本合集包含：</p><a>红楼梦：上卷</a><a>西游记：下卷</a>'),
+    mk('第一回 上部一回'), mk('第二回 上部二回'), mk('第三回 上部三回'),
+    mk('封底'), mk('封面'), mk('书名页'), mk('版权页'), mk('目录'),
+    mk('第一回 下部一回'), mk('第二回 下部二回'),
+    mk('后记')
+  ];
+  return b;
+}
+const coll = sampleCollection();
+fs.writeFileSync(path.join(outDir, 'collection.mobi'), Buffer.from(E.writeMobi(coll).bytes));
+const collEpub = await E.writeEpub(coll);
+fs.writeFileSync(path.join(outDir, 'collection.epub'), Buffer.from(collEpub.bytes));
+
 console.log('samples written to', outDir);
 console.log(fs.readdirSync(outDir).map(f => f + ' ' + fs.statSync(path.join(outDir, f)).size).join('\n'));

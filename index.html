@@ -152,6 +152,8 @@ h1{font-size:40px;line-height:1.25;margin:0 0 14px;letter-spacing:-.02em;font-we
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
 html.dark .chip.on{color:#08262a}
 .actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
+.ck{display:inline-flex;gap:7px;align-items:center;font-size:13.5px;color:var(--sub);cursor:pointer;user-select:none}
+.ck input{accent-color:var(--acc);width:15px;height:15px;margin:0}
 .btn{border:none;border-radius:10px;padding:12px 26px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
 .btn.primary{background:var(--acc);color:#fff}
 html.dark .btn.primary{color:#08262a}
@@ -302,6 +304,7 @@ html.dark{--kg-ink:#e9ecf1;--kg-sub:#96a1af;--kg-line:#242e3a;--kg-bg:#11181f}
       <div class="actions">
         <button class="btn primary" id="goBtn" disabled data-i18n="goBtn">开始转换</button>
         <button class="btn ghost" id="clearBtn" data-i18n="clearBtn">清空列表</button>
+        <label class="ck"><input type="checkbox" id="splitChk" checked><span data-i18n="splitChk">合集自动拆分为多本</span></label>
         <span class="pill work" id="enginePill" hidden></span>
       </div>
       <div class="engine-note"><span class="dot"></span><span data-i18n="engineNote">100% 本地运行：转换过程不产生任何网络上传，断网也能用。</span></div>
@@ -911,6 +914,96 @@ function mobiLang(locale){
   const id = locale & 0xFF;
   const map = {4:'zh',9:'en',1:'ar',3:'ca',5:'cs',6:'da',7:'de',8:'el',10:'es',12:'fr',14:'hu',15:'is',16:'it',17:'ja',18:'ko',19:'nl',20:'no',21:'pl',22:'pt',25:'ru',26:'hr',27:'sk',28:'sq',29:'sv',30:'th',31:'tr',33:'id',42:'vi'};
   return map[id] || '';
+}
+
+/* ── collection (anthology) splitting ── */
+function cn2num(s){
+  s = s.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 65248));
+  if (/^[0-9]+$/.test(s)) return parseInt(s, 10);
+  const D = {零:0,〇:0,一:1,二:2,两:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9};
+  const chars = [...s];
+  if (chars.length > 1 && chars.every(c => c in D)){
+    let n = 0;                                        /* positional style: 一一○ → 110 */
+    for (const c of chars) n = n * 10 + D[c];
+    return n;
+  }
+  const U = {十:10,百:100,千:1000};                    /* combinatorial: 一百二十 → 120 */
+  let total = 0, cur = 0;
+  for (const c of chars){
+    if (c in D) cur = D[c];
+    else if (c in U){ total += (cur || 1) * U[c]; cur = 0; }
+  }
+  return total + cur;
+}
+function parseChapterNo(title){
+  const m = /^\s*第\s*([0-9０-９零〇一二三四五六七八九十百千两]+)\s*[回章节卷集部篇]/.exec(title || '');
+  return m ? cn2num(m[1]) : null;
+}
+const WRAPPER_RE = /^(封面|封底|书名页|版权页|目录|总目录|前言|序|序言|引言|导言|出版说明|出版者的话|后记|附录|插图|插图目录|译后记)$/;
+/* Detect anthology books inside one file: chapter numbering that RESTARTS at 一/1
+ * marks a new book. Returns [{title, chapters, cover}] or null. */
+function splitCollection(book){
+  const chs = book.chapters;
+  if (!chs || chs.length < 6) return null;
+  const nos = chs.map(c => parseChapterNo((c.title || '').trim() || firstHeading(c.html)));
+  const starts = [0];
+  let prevNo = 0;
+  for (let i = 0; i < chs.length; i++){
+    const no = nos[i];
+    if (no != null && no === 1 && prevNo > 1) starts.push(i);
+    if (no != null) prevNo = no;
+  }
+  if (starts.length < 2) return null;
+  const segs = starts.map((s, k) => ({ start: s, end: k + 1 < starts.length ? starts[k + 1] : chs.length }));
+  /* trailing wrapper chapters (封面/版权页/目录…) belong to the NEXT book */
+  for (let k = 0; k < segs.length - 1; k++){
+    while (segs[k].end > segs[k].start + 1){
+      const t = (chs[segs[k].end - 1].title || '').trim();
+      if (t.length <= 6 && WRAPPER_RE.test(t)) segs[k].end--;
+      else break;
+    }
+    segs[k + 1].start = segs[k].end;
+  }
+  /* front-matter-only first segment merges into book 1 */
+  const groups = [];
+  let carry = [];
+  for (let k = 0; k < segs.length; k++){
+    const idxs = [];
+    for (let i = segs[k].start; i < segs[k].end; i++) idxs.push(i);
+    const hasNumbered = idxs.some(i => nos[i] != null);
+    if (!hasNumbered && k < segs.length - 1){ carry = carry.concat(idxs); continue; }
+    groups.push(carry.concat(idxs));
+    carry = [];
+  }
+  if (groups.length < 2) return null;
+  /* book names from TOC link texts before the first restart */
+  const firstRestart = starts[1];
+  const names = [];
+  const seen = new Set();
+  for (let i = 0; i < firstRestart && i < chs.length; i++){
+    const doc = parseDoc(chs[i].html);
+    if (!doc) continue;
+    for (const a of doc.querySelectorAll('a')){
+      const t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      if (t.length < 2 || t.length > 30 || /^https?:/i.test(t)) continue;
+      if (/^第\s*[0-9零〇一二三四五六七八九十百千两]/.test(t)) continue;   /* 回目链接 */
+      const base = t.split(/[：:·•—－\-／/（(]/)[0].trim();
+      if (base.length < 2 || base.length > 20 || WRAPPER_RE.test(base)) continue;
+      if (!/[\u4e00-\u9fffA-Za-z]/.test(base)) continue;   /* 脚注 [1] / 纯符号 */
+      if (!seen.has(base)){ seen.add(base); names.push(base); }
+    }
+  }
+  const zh = (book.language || 'zh').startsWith('zh') || /[\u4e00-\u9fff]/.test(book.title || '');
+  return groups.map((idxs, k) => {
+    let cover = null;
+    for (const i of idxs){
+      const m = /src="bkimg:([^"]+)"/.exec(chs[i].html);
+      if (m && book.images.get(m[1])){ cover = book.images.get(m[1]); break; }
+    }
+    const title = names.length === groups.length ? names[k]
+      : (zh ? `第${k + 1}部` : `Part ${k + 1}`);
+    return { title, chapters: idxs.map(i => chs[i]), cover };
+  });
 }
 function parseMobiHeader(r0, numRec){
   const h = { compression: u16(r0,0), textLength: u32(r0,4), textRecs: u16(r0,8), encryption: u16(r0,12),
@@ -1849,6 +1942,7 @@ Object.assign(E, {
   parseBook, writeBook, parseEpub, parseMobi, parseFb2, parseTxt, parseMd, parseHtmlFile, parsePdf, parseDocx,
   writeEpub, writeMobi, writeHtml, writeTxt, writeMd, writeFb2,
   sanitizeHtml, htmlToText, htmlToMd, trimTrailing, splitByHeadings, looksLikeChapter, linesToParas, miniMd,
+  splitCollection, parseChapterNo, cn2num,
   _palmCompress: palmCompress, _palmDecompress: palmDecompress, _loadHuffCdic: loadHuffCdic, _parseMobiHeader: parseMobiHeader
 });
 })();
@@ -1872,6 +1966,7 @@ zh: {
   metaTitleL: '书名（可选，覆盖原数据）', metaTitlePh: '留空则使用文件自带书名',
   metaAuthorL: '作者（可选）', metaAuthorPh: '留空则使用文件自带作者',
   outLbl: '转换为：', goBtn: '开始转换', clearBtn: '清空列表',
+  splitChk: '合集自动拆分为多本', stSplit: '完成 · 拆分 {n} 本',
   engineNote: '100% 本地运行：转换过程不产生任何网络上传，断网也能用。',
   howT: '三步完成转换', howD: '不需要安装 Calibre，不需要注册账号，浏览器打开就能用。',
   s1t: '拖入文件', s1d: '把 EPUB、MOBI、PDF 等文件拖到上方虚线框，支持一次多选。',
@@ -1927,6 +2022,7 @@ en: {
   metaTitleL: 'Title (optional, overrides metadata)', metaTitlePh: 'Leave empty to keep the original title',
   metaAuthorL: 'Author (optional)', metaAuthorPh: 'Leave empty to keep the original author',
   outLbl: 'Convert to:', goBtn: 'Convert', clearBtn: 'Clear list',
+  splitChk: 'Auto-split anthologies into books', stSplit: 'Done · split into {n}',
   engineNote: '100% local: conversion produces zero network uploads. Works offline.',
   howT: 'Convert in three steps', howD: 'No Calibre to install, no account to create — it just works in your browser.',
   s1t: 'Drop files', s1d: 'Drag EPUB, MOBI, PDF and other files into the dashed area above. Multiple selection supported.',
@@ -2130,7 +2226,7 @@ function renderFiles(){
     const row = document.createElement('div');
     row.className = 'fitem';
     const pillCls = it.status === 'ok' ? 'ok' : it.status === 'bad' ? 'bad' : it.status === 'work' ? 'work' : 'wait';
-    const pillTxt = it.reason ? T(it.reason) : T('stWait');
+    const pillTxt = it.reason ? T(it.reason) : (it.status === 'ok' && it.splitCount ? T('stSplit').replace('{n}', it.splitCount) : T('stWait'));
     const pill = it.status === 'wait' ? '' : `<span class="pill ${pillCls}">${pillTxt}</span>`;
     row.innerHTML = `<span class="ficon">${EXT_ICON[extOf(it.name)] || '📄'}</span>
       <div class="fmeta"><div class="fname"></div><div class="fsub">${fmtSize(it.size)} · ${(extOf(it.name) || '?').toUpperCase()}${pill}</div></div>
@@ -2148,8 +2244,8 @@ function updateGo(){
 }
 
 /* ── output ── */
-function outName(item, book, ext){
-  const base = ($('metaTitle').value.trim() || book.title || item.name.replace(/\.[^.]+$/,'') || 'book')
+function outName(item, book, ext, skipMeta){
+  const base = ((skipMeta ? '' : $('metaTitle').value.trim()) || book.title || item.name.replace(/\.[^.]+$/,'') || 'book')
     .replace(/[\\/:*?"<>|\x00-\x1f]/g,'').trim().slice(0,80) || 'book';
   const taken = new Set(state.results.map(r => r.name));
   let name = base + '.' + ext, n = 2;
@@ -2201,12 +2297,26 @@ async function convertAll(){
       if (ma) book.author = ma;
       setStatus(it, 'work', 'stWrite');
       await ensureDeps(null);
-      const res = await BM.writeBook(book, state.fmt);
-      const blob = new Blob([res.bytes || res.text], { type: res.mime });
-      const name = outName(it, book, res.ext);
-      state.results.push({ name, blob, size: blob.size });
-      addResultRow(name, blob, it);
-      setStatus(it, 'ok', 'stDone');
+      const subs = $('splitChk').checked ? BM.splitCollection(book) : null;
+      if (subs && subs.length > 1){
+        it.splitCount = subs.length;
+        for (const sub of subs){
+          const subBook = Object.assign({}, book, { title: sub.title, chapters: sub.chapters, cover: sub.cover || book.cover });
+          const res = await BM.writeBook(subBook, state.fmt);
+          const blob = new Blob([res.bytes || res.text], { type: res.mime });
+          const name = outName(it, subBook, res.ext, true);
+          state.results.push({ name, blob, size: blob.size });
+          addResultRow(name, blob, it);
+        }
+        setStatus(it, 'ok', 'stDone');
+      } else {
+        const res = await BM.writeBook(book, state.fmt);
+        const blob = new Blob([res.bytes || res.text], { type: res.mime });
+        const name = outName(it, book, res.ext);
+        state.results.push({ name, blob, size: blob.size });
+        addResultRow(name, blob, it);
+        setStatus(it, 'ok', 'stDone');
+      }
     } catch(err){
       console.warn('convert failed:', it.name, err);
       setStatus(it, 'bad', null);
@@ -2255,6 +2365,8 @@ document.addEventListener('paste', e => {
 /* boot */
 applyTheme();
 applyLang(detectLang());
+$('splitChk').checked = localStorage.getItem('bm-split') !== '0';
+$('splitChk').addEventListener('change', () => localStorage.setItem('bm-split', $('splitChk').checked ? '1' : '0'));
 renderFiles();
 updateGo();
 loadLibUrl('jszip').then(() => BM.setDeps({ JSZip: window.JSZip })).catch(() => {});

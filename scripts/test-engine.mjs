@@ -288,5 +288,40 @@ console.log('10. MOBI multi-document rawML (calibre KF8 style, one <body> per ch
   ok(book.title === '多文档测试', 'title', book.title);
 }
 
+console.log('11. splitCollection (anthology detection)');
+{
+  const mk = (t, body) => ({ title: t, html: body || `<p>${t}的内容。</p>` });
+  const book = E.newBook('测试合集', '某人', 'zh');
+  book.chapters = [
+    mk('总目录', '<p>目录：</p><a>红楼梦：全2册 上</a><a>西游记：全3册</a>'),
+    mk('第一回 甲回目'), mk('第二回 乙回目'), mk('第三回 丙回目'),
+    mk('封底'), mk('封面'), mk('书名页'), mk('版权页'), mk('前言'), mk('目录'),
+    mk('第一回 丁回目'), mk('第二回 戊回目'),
+    mk('后记')
+  ];
+  const subs = E.splitCollection(book);
+  ok(!!subs && subs.length === 2, 'detected 2 books', subs && subs.length);
+  ok(subs[0].title === '红楼梦' && subs[1].title === '西游记', 'names from TOC links', JSON.stringify(subs.map(s => s.title)));
+  ok(subs[0].chapters.length === 4, 'book1 = TOC + 3 chapters', subs[0].chapters.map(c => c.title));
+  ok(subs[1].chapters.length === 9, 'book2 = wrappers moved in + 2 chapters + 后记', subs[1].chapters.map(c => c.title));
+  ok(subs[0].chapters.some(c => c.title === '第一回 甲回目'), 'book1 keeps own chapters');
+  ok(!subs[0].chapters.some(c => c.title === '封底'), 'wrappers moved out of book1');
+  /* single book must NOT split */
+  const single = E.newBook('普通书', '', 'zh');
+  single.chapters = [mk('序章'), mk('第一回 一'), mk('第二回 二'), mk('第三回 三'), mk('第四回 四'), mk('第五回 五'), mk('尾声')];
+  ok(E.splitCollection(single) === null, 'single book not split');
+  /* untitled chapters fall back to heading */
+  const h1book = E.newBook('无题合集', '', 'zh');
+  h1book.chapters = [
+    mk(''), mk(''), mk(''),   /* front matter, headings inside html */
+    mk('', '<h2>第一回 上部一回</h2><p>x</p>'), mk('', '<h2>第二回</h2><p>x</p>'),
+    mk(''), mk(''), mk(''), mk(''), mk(''),
+    mk('', '<h2>第一回 下部一回</h2><p>y</p>'), mk('', '<h2>第二回</h2><p>y</p>'), mk(''), mk(''), mk('')
+  ];
+  const subs2 = E.splitCollection(h1book);
+  ok(!!subs2 && subs2.length === 2, 'heading fallback detects 2 books', subs2 && subs2.length);
+  ok(subs2[0].title === '第1部' || subs2[0].title === 'Part 1', 'fallback naming', subs2[0].title);
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
