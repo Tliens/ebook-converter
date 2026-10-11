@@ -925,7 +925,7 @@ function parseMobiHeader(r0, numRec){
   h.encoding = h.codepage === 65001 ? 'utf-8' : 'windows-1252';
   h.locale = u32(r0,0x5C);
   const fi = u32(r0,0x6C);
-  if (fi !== 0xFFFFFFFF && fi < numRec) h.firstImage = fi;
+  if (fi !== 0xFFFFFFFF && fi > 0 && fi < numRec) h.firstImage = fi;
   h.huffOff = u32(r0,0x70); h.huffCnt = u32(r0,0x74);
   const toff = u32(r0,0x54), tlen = u32(r0,0x58);
   if (toff > 0 && tlen > 0 && toff + tlen <= r0.length){
@@ -1006,26 +1006,51 @@ async function parseMobi(bytes, name){
     const covRec = m.firstImage + (m.coverOffset || 0);
     if (recToId.has(covRec)) book.cover = book.images.get(recToId.get(covRec));
   }
-  /* body html */
-  let bodyHtml = html;
-  const bm = /<body[^>]*>([\s\S]*?)<\/body>/i.exec(html);
-  if (bm) bodyHtml = bm[1];
-  if (m.firstImage != null){
-    bodyHtml = bodyHtml.replace(/<img\s[^>]*>/gi, tag => {
-      const ri = /recindex\s*=\s*["']?0*(\d+)/i.exec(tag);
-      if (!ri) return '';
-      const id = recToId.get(m.firstImage + parseInt(ri[1],10) - 1);
-      if (!id) return '';
-      const alt = /alt\s*=\s*"([^"]*)"/i.exec(tag);
-      return `<img src="bkimg:${id}"${alt ? ` alt="${xmlEsc(alt[1])}"` : ''}>`;
+  /* body html — rawML comes in three shapes:
+   * ① classic single document, content inside <body> (MOBI7 / simple KF8)
+   * ② concatenation of complete XHTML docs with content inside their bodies (calibre KF8)
+   * ③ Amazon KF8 "shell + trailing content": hundreds of small docs with EMPTY <body>,
+   *    the real elements flow after each </html> (store-bought 四大名著-style files)
+   * Unified: split into per-document segments, strip head/html/body wrappers,
+   * keep everything else. Each segment becomes a pagebreak-separated chapter part. */
+  let segments;
+  const bodyCount = (html.match(/<body/gi) || []).length;
+  if (bodyCount > 1) {
+    segments = html.split(/<\?xml[^>]*\?>/i).filter(s => s.trim()).map(seg => {
+      const t = /<title[^>]*>([^<]*)<\/title>/i.exec(seg);
+      const content = seg
+        .replace(/<head[\s\S]*?<\/head>/gi, '')
+        .replace(/<!DOCTYPE[^>]*>/gi, '')
+        .replace(/<\/?html[^>]*>/gi, '')
+        .replace(/<body[^>]*>/gi, '')
+        .replace(/<\/body>/gi, '');
+      return { docTitle: t ? t[1].replace(/\s+/g, ' ').trim().slice(0, 120) : '', content };
     });
+  } else {
+    const bodies = [];
+    html.replace(/<body[^>]*>([\s\S]*?)<\/body>/gi, (m0, inner) => { bodies.push(inner); return m0; });
+    segments = [{ docTitle: '', content: bodies.length ? bodies.join('<mbp:pagebreak/>') : html }];
+  }
+  if (m.firstImage != null){
+    for (const seg of segments){
+      seg.content = seg.content.replace(/<img\s[^>]*>/gi, tag => {
+        const ri = /recindex\s*=\s*["']?0*(\d+)/i.exec(tag);
+        if (!ri) return tag;
+        const id = recToId.get(m.firstImage + parseInt(ri[1],10) - 1);
+        if (!id) return '';
+        const alt = /alt\s*=\s*"([^"]*)"/i.exec(tag);
+        return `<img src="bkimg:${id}"${alt ? ` alt="${xmlEsc(alt[1])}"` : ''}>`;
+      });
+    }
   }
   const chapters = [];
-  for (const part of bodyHtml.split(/<mbp:pagebreak\s*\/?>/i)){
-    const cleaned = sanitizeHtml(part, { images: book.images, resMap: null, dir: '' });
-    const hasText = cleaned.replace(/<[^>]+>/g,'').trim();
-    if (!hasText && !cleaned.includes('<img')) continue;
-    chapters.push({ title: firstHeading(cleaned), html: cleaned });
+  for (const seg of segments){
+    for (const part of seg.content.split(/<mbp:pagebreak\s*\/?>/i)){
+      const cleaned = sanitizeHtml(part, { images: book.images, resMap: null, dir: '' });
+      const hasText = cleaned.replace(/<[^>]+>/g,'').trim();
+      if (!hasText && !cleaned.includes('<img')) continue;
+      chapters.push({ title: firstHeading(cleaned) || (segments.length > 1 ? seg.docTitle : ''), html: cleaned });
+    }
   }
   book.chapters = chapters.length ? chapters : [{ title: book.title || stem, html: `<p>${xmlEsc(stem)}</p>` }];
   return book;

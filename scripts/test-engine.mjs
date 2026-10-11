@@ -243,5 +243,50 @@ console.log('9. HTML/MD/FB2 writers from EPUB-sourced book');
   ok(md.text.includes('> 引文') && md.text.includes('- 甲'), 'md: quote & list', md.text.slice(0, 250));
 }
 
+console.log('10. MOBI multi-document rawML (calibre KF8 style, one <body> per chapter)');
+{
+  /* hand-build a compression=1, utf-8 MOBI with two small xhtml docs in two text records */
+  const u32w = (arr, o, x) => { arr[o]=((x>>>24)&255); arr[o+1]=((x>>>16)&255); arr[o+2]=((x>>>8)&255); arr[o+3]=(x&255); };
+  const docs = [
+    '<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html><html><head><title>A</title></head><body><h2>第一章</h2><p>多文档测试第一章内容。</p></body></html>',
+    '<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html><html><head><title>B</title></head><body><h2>第二章</h2><p>多文档测试第二章内容。</p></body></html>'
+  ];
+  const textRecs = docs.map(d => TE.encode(d));
+  const title = '多文档测试';
+  const titleB = TE.encode(title);
+  const hdrLen = 232;
+  const toff = 16 + hdrLen;
+  const r0 = new Uint8Array(toff + titleB.length);
+  r0[1] = 1; /* compression = 1 (none) */
+  let tl = 0; for (const t of textRecs) tl += t.length;
+  u32w(r0, 4, tl);
+  r0[8] = (textRecs.length >> 8) & 255; r0[9] = textRecs.length & 255; /* PalmDOC recordCount */
+  r0[10] = 0x10; r0[11] = 0; /* recordSize 4096 */
+  r0[16] = 77; r0[17] = 79; r0[18] = 66; r0[19] = 73; /* 'MOBI' */
+  u32w(r0, 0x14, hdrLen);
+  u32w(r0, 0x18, 8);        /* KF8-ish type */
+  u32w(r0, 0x1C, 65001);
+  u32w(r0, 0x24, 8);
+  u32w(r0, 0x54, toff); u32w(r0, 0x58, titleB.length);
+  r0.set(titleB, toff);
+  const recs = [r0].concat(textRecs);
+  const head = new Uint8Array(78);
+  head[60] = 66; head[61] = 79; head[62] = 79; head[63] = 75; head[64] = 77; head[65] = 79; head[66] = 66; head[67] = 73; /* BOOKMOBI */
+  head[76] = 0; head[77] = recs.length;
+  const reclist = new Uint8Array(recs.length * 8 + 2);
+  let off = 78 + reclist.length;
+  recs.forEach((r, i) => { u32w(reclist, i*8, off); off += r.length; });
+  const bytes = E ? new Uint8Array(0) : null;
+  const all = new Uint8Array(78 + reclist.length + recs.reduce((a, r) => a + r.length, 0));
+  all.set(head, 0); all.set(reclist, 78);
+  let o2 = 78 + reclist.length;
+  for (const r of recs){ all.set(r, o2); o2 += r.length; }
+  const book = await E.parseMobi(all, 'multi.mobi');
+  ok(book.chapters.length === 2, 'two documents → two chapters', book.chapters.length);
+  ok(book.chapters[0].title === '第一章' && book.chapters[1].title === '第二章', 'chapter titles from headings', JSON.stringify(book.chapters.map(c => c.title)));
+  ok(book.chapters[0].html.includes('多文档测试第一章内容') && book.chapters[1].html.includes('多文档测试第二章内容'), 'chapter bodies');
+  ok(book.title === '多文档测试', 'title', book.title);
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
