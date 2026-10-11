@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>魁歌在线电子书格式转换工具 — EPUB/MOBI/AZW3/PDF 免费互转</title>
+<meta name="description" content="免费在线电子书格式转换工具：EPUB、MOBI、AZW3、FB2、PDF、DOCX、TXT、HTML、Markdown 互转，输出 EPUB/MOBI/HTML/TXT/Markdown/FB2。所有转换在浏览器本地完成，文件不上传，无需注册。">
+<meta name="keywords" content="电子书格式转换,EPUB转MOBI,MOBI转EPUB,AZW3转换,PDF转EPUB,FB2转换,epub converter,ebook converter online">
+<link rel="canonical" href="https://ebook-converter.kuige.me/">
+<link rel="alternate" hreflang="zh" href="https://ebook-converter.kuige.me/">
+<link rel="alternate" hreflang="en" href="https://ebook-converter.kuige.me/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://ebook-converter.kuige.me/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="魁歌在线电子书格式转换工具">
+<meta property="og:title" content="魁歌在线电子书格式转换工具 — EPUB/MOBI/AZW3/PDF 免费互转">
+<meta property="og:description" content="EPUB、MOBI、AZW3、FB2、PDF、DOCX、TXT、HTML、Markdown 互转。纯浏览器本地转换，文件不上传。">
+<meta property="og:url" content="https://ebook-converter.kuige.me/">
+<meta property="og:image" content="https://ebook-converter.kuige.me/og-image.png">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="魁歌在线电子书格式转换工具 — EPUB/MOBI/AZW3/PDF 免费互转">
+<meta name="twitter:description" content="EPUB、MOBI、AZW3、FB2、PDF、DOCX、TXT、HTML、Markdown 互转。纯浏览器本地转换，文件不上传。">
+<meta name="twitter:image" content="https://ebook-converter.kuige.me/og-image.png">
+<link rel="icon" type="image/png" href="favicon.png?v=1">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1">
+<script>
+/* theme pre-paint: avoid flash before the module runs */
+(function(){ try {
+  var t = localStorage.getItem('bm-theme') || 'auto';
+  var dark = t === 'dark' || (t !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+  if (dark) document.documentElement.classList.add('dark');
+} catch(e){} })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "魁歌在线电子书格式转换工具",
+  "alternateName": "KuiGe Ebook Converter",
+  "url": "https://ebook-converter.kuige.me/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (browser-based)",
+  "description": "免费在线电子书格式转换工具：EPUB、MOBI、AZW3、FB2、PDF、DOCX、TXT、HTML、Markdown 互转，输出 EPUB/MOBI/HTML/TXT/Markdown/FB2。所有转换在浏览器本地完成，文件不上传。",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "featureList": "EPUB to MOBI, MOBI to EPUB, AZW3 to EPUB, PDF to EPUB, FB2 to EPUB, DOCX to EPUB, batch conversion, in-browser local conversion",
+  "inLanguage": ["zh-CN", "en"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "转换时我的电子书会被上传到服务器吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不会。本工具的所有解析与转换都在你的浏览器里完成，文件不会离开你的设备。你可以断网后使用，也可以在浏览器开发者工具的网络面板里确认没有任何文件上传请求。" }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么有些 MOBI/AZW3 文件无法转换？",
+      "acceptedAnswer": { "@type": "Answer", "text": "最常见的原因是 DRM 版权保护：从商店购买并绑定账号的电子书通常加了加密，任何工具都不能也不应该转换受 DRM 保护的文件。本工具只支持无 DRM 的文件（自己制作的、公共领域的、或明确允许转换的电子书）。" }
+    },
+    {
+      "@type": "Question",
+      "name": "EPUB 和 MOBI 应该选哪个？",
+      "acceptedAnswer": { "@type": "Answer", "text": "EPUB 是国际通用的开放格式，苹果图书、Google 图书、微信读书、Calibre 及绝大多数安卓阅读器都支持，优先选 EPUB。MOBI 主要用于向 Kindle 老设备推送；较新的 Kindle 固件也已直接支持 EPUB，可通过「发送至 Kindle」服务推送。" }
+    },
+    {
+      "@type": "Question",
+      "name": "PDF 转成电子书后排版乱了怎么办？",
+      "acceptedAnswer": { "@type": "Answer", "text": "PDF 是按固定页面排版的格式，转成可回流排版（reflowable）的电子书时只能提取文字流，原页面布局、多栏、图片位置都可能变化。建议转换后检查章节划分；扫描版 PDF 没有文字层，无法提取内容。" }
+    },
+    {
+      "@type": "Question",
+      "name": "转换后的 MOBI 文件如何传到 Kindle？",
+      "acceptedAnswer": { "@type": "Answer", "text": "可以用 USB 数据线把文件拷贝到 Kindle 的 documents 文件夹，也可以把文件发送到你的「发送至 Kindle」邮箱，或使用 Amazon 网页版/ App 的发送至 Kindle 上传功能。" }
+    },
+    {
+      "@type": "Question",
+      "name": "支持批量转换吗？有没有文件大小限制？",
+      "acceptedAnswer": { "@type": "Answer", "text": "支持。一次可以拖入多个文件按同一目标格式依次转换。转换在本地进行，速度取决于你的设备性能；建议单个文件不超过 150MB，超大电子书在低端设备上可能较慢。" }
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#f7f5f0; --card:#ffffff; --ink:#1d2430; --sub:#5b6572; --line:#e7e3da; --line2:#efece5;
+  --acc:#0d8a96; --acc-ink:#0a6f79; --acc-soft:rgba(13,138,150,.09);
+  --acc2:#e05d47; --ok:#188a4f; --bad:#c73e3e; --warn:#a8721a;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(29,36,48,.05),0 8px 28px rgba(29,36,48,.06);
+}
+html.dark{
+  --bg:#0d1217; --card:#151c24; --ink:#e9ecf1; --sub:#96a1af; --line:#242e3a; --line2:#1c2530;
+  --acc:#3ec7d4; --acc-ink:#6ad4de; --acc-soft:rgba(62,199,212,.11);
+  --acc2:#f0795f; --ok:#4ecb84; --bad:#f0795f; --warn:#e0b45c;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--acc-ink)}
+img{max-width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+h2.sec{font-size:26px;line-height:1.35;margin:0 0 8px;letter-spacing:-.01em}
+p.secdesc{color:var(--sub);margin:0 0 28px;font-size:15px}
+section{padding:56px 0 8px}
+/* ── hero ── */
+.hero{padding:64px 0 10px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--acc-ink);background:var(--acc-soft);border:1px solid var(--acc-soft);padding:5px 14px;border-radius:999px;margin-bottom:18px;font-weight:600}
+h1{font-size:40px;line-height:1.25;margin:0 0 14px;letter-spacing:-.02em;font-weight:800}
+.hero .sub{color:var(--sub);font-size:17px;max-width:680px;margin:0 auto 22px}
+.badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:6px}
+.badge{font-size:13px;color:var(--sub);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+.badge b{color:var(--ink);font-weight:600}
+/* ── app card ── */
+#app{padding-top:34px}
+.appcard{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:22px;max-width:860px;margin:0 auto}
+#drop{border:2px dashed var(--line);border-radius:12px;padding:38px 20px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:transparent}
+#drop:hover,#drop.over{border-color:var(--acc);background:var(--acc-soft)}
+#drop .big{font-size:34px;line-height:1}
+#drop .t1{font-weight:700;margin:10px 0 4px;font-size:16px}
+#drop .t2{color:var(--sub);font-size:13px}
+.fmthint{margin-top:14px;font-size:12.5px;color:var(--sub);line-height:1.9}
+.fmthint code{font-family:var(--mono);font-size:11.5px;background:var(--line2);border:1px solid var(--line);border-radius:5px;padding:1.5px 6px;margin:0 1px;white-space:nowrap}
+#fileList{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.fitem{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--bg)}
+.fitem .ficon{font-size:20px;flex:0 0 auto}
+.fitem .fmeta{flex:1;min-width:0}
+.fitem .fname{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fitem .fsub{font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fitem .fsub .pill{margin-left:6px}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px;vertical-align:1px}
+.pill.wait{background:var(--line2);color:var(--sub)}
+.pill.work{background:var(--acc-soft);color:var(--acc-ink)}
+.pill.ok{background:rgba(24,138,79,.12);color:var(--ok)}
+.pill.bad{background:rgba(199,62,62,.12);color:var(--bad)}
+.fitem .dl{flex:0 0 auto}
+.meta-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.meta-row label{display:block;font-size:12px;color:var(--sub);margin-bottom:4px;font-weight:600}
+.meta-row input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 12px;color:var(--ink);font:inherit;font-size:14px}
+.meta-row input:focus{outline:2px solid var(--acc-soft);border-color:var(--acc)}
+.outrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}
+.outrow .lbl{font-size:13px;color:var(--sub);font-weight:600;margin-right:2px}
+.chip{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .12s}
+.chip:hover{border-color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+html.dark .chip.on{color:#08262a}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
+.btn{border:none;border-radius:10px;padding:12px 26px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s}
+.btn.primary{background:var(--acc);color:#fff}
+html.dark .btn.primary{color:#08262a}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.primary:disabled{opacity:.55;cursor:not-allowed;filter:none}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:600;padding:9px 16px;font-size:13.5px}
+.btn.ghost:hover{border-color:var(--acc);color:var(--acc-ink)}
+.btn.small{padding:7px 14px;font-size:13px}
+.engine-note{font-size:12.5px;color:var(--sub);margin-top:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.engine-note .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);display:inline-block}
+#prog{margin-top:14px;height:6px;border-radius:99px;background:var(--line2);overflow:hidden}
+#progBar{height:100%;width:0;background:var(--acc);border-radius:99px;transition:width .2s}
+#results{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.ritem{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--bg)}
+.ritem .rmeta{flex:1;min-width:0}
+.ritem .rname{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ritem .rsub{font-size:12px;color:var(--sub)}
+/* ── steps ── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.step .n{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--acc-soft);color:var(--acc-ink);font-weight:800;align-items:center;justify-content:center;font-size:14px;margin-bottom:12px}
+.step h3{margin:0 0 6px;font-size:16.5px}
+.step p{margin:0;color:var(--sub);font-size:14px}
+/* ── matrix ── */
+.mtx-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table.mtx{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+.mtx th,.mtx td{padding:11px 14px;text-align:center;border-bottom:1px solid var(--line2)}
+.mtx th{font-size:12.5px;color:var(--sub);font-weight:600;background:var(--line2);position:sticky;top:0}
+.mtx td:first-child,.mtx th:first-child{text-align:left;font-weight:600;white-space:nowrap}
+.mtx tr:last-child td{border-bottom:none}
+.yes{color:var(--ok);font-weight:700}
+.no{color:var(--line);font-weight:700}
+.mtxnote{font-size:12.5px;color:var(--sub);margin-top:10px}
+/* ── guide ── */
+.guide{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.gcard h3{margin:0 0 10px;font-size:17px}
+.gcard p{margin:0 0 10px;color:var(--sub);font-size:14.5px}
+.gcard p:last-child{margin-bottom:0}
+.gcard b{color:var(--ink)}
+/* ── faq ── */
+details.faq{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 20px;margin-bottom:10px}
+details.faq summary{cursor:pointer;font-weight:700;font-size:15.5px;padding:16px 0;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"+";color:var(--acc);font-size:20px;font-weight:400;flex:0 0 auto}
+details.faq[open] summary::after{content:"–"}
+details.faq .a{color:var(--sub);font-size:14.5px;padding:0 0 16px}
+/* ── KuiGe 站群统一基座 ───────────────────── */
+:root{--kg-ink:#1f2430;--kg-sub:#6b7280;--kg-accent:#f2603c;--kg-line:#e8e6e1;--kg-bg:#faf9f7}
+html.dark{--kg-ink:#e9ecf1;--kg-sub:#96a1af;--kg-line:#242e3a;--kg-bg:#11181f}
+.kg-top{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--kg-line)}
+.kg-top-in{max-width:1120px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.kg-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:17px}
+.kg-brand img{width:32px;height:32px;border-radius:9px;display:block}
+.kg-brand small{font-weight:500;color:var(--sub);font-size:12px;margin-left:8px;white-space:nowrap}
+.kg-nav{display:flex;align-items:center;gap:14px;font-size:14px}
+.kg-nav a{color:var(--sub);text-decoration:none}
+.kg-nav a:hover{color:var(--ink)}
+.kg-nav .ctl{background:none;border:1px solid var(--line);border-radius:8px;color:var(--sub);font:inherit;font-size:13px;padding:4px 10px;cursor:pointer;white-space:nowrap}
+.kg-nav .ctl:hover{color:var(--ink);border-color:var(--acc)}
+.kg-entry{background:var(--kg-ink);color:#fff!important;padding:6px 14px;border-radius:999px;text-decoration:none;font-size:13px}
+.kg-entry:hover{background:var(--kg-accent)}
+.kg-foot{background:var(--kg-bg);border-top:1px solid var(--kg-line);color:var(--kg-sub);font-size:13px;margin-top:0}
+.kg-foot-in{max-width:1120px;margin:0 auto;padding:36px 20px 28px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.kg-foot img{width:44px;height:44px;border-radius:12px;margin-bottom:2px}
+.kg-foot-brand{color:var(--ink);font-weight:700;font-size:15px;margin:0}
+.kg-foot-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px}
+.kg-foot-links a{color:var(--kg-sub);text-decoration:none}
+.kg-foot-links a:hover{color:var(--kg-accent)}
+.kg-foot-copy{margin:4px 0 0;color:#9ca3af;font-size:12px}
+@media(max-width:640px){.kg-nav a:not(.kg-entry){display:none}.kg-brand small{display:none}.kg-brand{font-size:15px}.kg-brand span{max-width:52vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}}
+@media(max-width:430px){.kg-entry{font-size:0;padding:6px 12px}.kg-entry::before{content:"🎨";font-size:13px}}
+@media(max-width:860px){
+  h1{font-size:31px}
+  .hero{padding:44px 0 6px}
+  .steps{grid-template-columns:1fr}
+  .guide{grid-template-columns:1fr}
+  .meta-row{grid-template-columns:1fr}
+  section{padding:44px 0 4px}
+}
+</style>
+</head>
+<body>
+<header class="kg-top">
+  <div class="kg-top-in">
+    <a class="kg-brand" href="./">
+      <img src="favicon.png?v=1" alt="魁歌电子书转换吉祥物">
+      <span><b data-i18n="brand">魁歌电子书转换</b><small data-i18n="brandSub">在线格式转换</small></span>
+    </a>
+    <nav class="kg-nav">
+      <a href="#app" data-i18n="navApp">开始转换</a>
+      <a href="#formats" data-i18n="navFormats">支持格式</a>
+      <a href="#guide" data-i18n="navGuide">转换指南</a>
+      <a href="#faq" data-i18n="navFaq">FAQ</a>
+      <button class="ctl" id="langBtn" type="button" title="Switch to English">EN</button>
+      <button class="ctl" id="themeBtn" type="button" title="主题">🌓</button>
+      <a class="kg-entry" href="https://icongems.kuige.me/" target="_blank" rel="noopener" data-i18n="kgEntry">IconGems · 免费图标库</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <span class="eyebrow">📚 <span data-i18n="eyebrow">纯浏览器本地转换 · 魁歌出品</span></span>
+    <h1 data-i18n="h1">在线电子书格式转换，文件不上传</h1>
+    <p class="sub" data-i18n="heroSub">EPUB、MOBI、AZW3、FB2、PDF、DOCX、TXT、HTML、Markdown 互转。所有解析与转换都在你的浏览器里完成，无需注册、没有水印。</p>
+    <div class="badges">
+      <span class="badge">🔒 <b data-i18n="b1">文件不上传</b></span>
+      <span class="badge">🆓 <b data-i18n="b2">免费无限制</b></span>
+      <span class="badge">📚 <b data-i18n="b3">9 种输入 · 6 种输出</b></span>
+      <span class="badge">⚡ <b data-i18n="b4">支持批量</b></span>
+    </div>
+  </div>
+
+  <section id="app" aria-label="转换器">
+    <div class="appcard">
+      <div id="drop" role="button" tabindex="0" aria-label="选择或拖入电子书文件">
+        <div class="big">📖</div>
+        <div class="t1" data-i18n="dropT1">拖入电子书文件，或点击选择</div>
+        <div class="t2" data-i18n="dropT2">可一次选择多个文件批量转换 · 也可以 Ctrl/⌘+V 粘贴文件</div>
+      </div>
+      <input type="file" id="fileInput" multiple hidden
+        accept=".epub,.mobi,.azw3,.azw,.prc,.fb2,.txt,.html,.htm,.xhtml,.md,.markdown,.pdf,.docx">
+      <div id="fileList"></div>
+      <div id="prog" hidden><div id="progBar"></div></div>
+
+      <div class="meta-row">
+        <div>
+          <label for="metaTitle" data-i18n="metaTitleL">书名（可选，覆盖原数据）</label>
+          <input id="metaTitle" type="text" data-i18n-ph="metaTitlePh" placeholder="留空则使用文件自带书名">
+        </div>
+        <div>
+          <label for="metaAuthor" data-i18n="metaAuthorL">作者（可选）</label>
+          <input id="metaAuthor" type="text" data-i18n-ph="metaAuthorPh" placeholder="留空则使用文件自带作者">
+        </div>
+      </div>
+
+      <div class="outrow">
+        <span class="lbl" data-i18n="outLbl">转换为：</span>
+        <button class="chip on" type="button" data-fmt="epub">EPUB</button>
+        <button class="chip" type="button" data-fmt="mobi">MOBI</button>
+        <button class="chip" type="button" data-fmt="html">HTML</button>
+        <button class="chip" type="button" data-fmt="txt">TXT</button>
+        <button class="chip" type="button" data-fmt="md">Markdown</button>
+        <button class="chip" type="button" data-fmt="fb2">FB2</button>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="goBtn" disabled data-i18n="goBtn">开始转换</button>
+        <button class="btn ghost" id="clearBtn" data-i18n="clearBtn">清空列表</button>
+        <span class="pill work" id="enginePill" hidden></span>
+      </div>
+      <div class="engine-note"><span class="dot"></span><span data-i18n="engineNote">100% 本地运行：转换过程不产生任何网络上传，断网也能用。</span></div>
+      <div id="results"></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2 class="sec" data-i18n="howT">三步完成转换</h2>
+    <p class="secdesc" data-i18n="howD">不需要安装 Calibre，不需要注册账号，浏览器打开就能用。</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3 data-i18n="s1t">拖入文件</h3><p data-i18n="s1d">把 EPUB、MOBI、PDF 等文件拖到上方虚线框，支持一次多选。</p></div>
+      <div class="step"><span class="n">2</span><h3 data-i18n="s2t">选择目标格式</h3><p data-i18n="s2d">可选 EPUB / MOBI / HTML / TXT / Markdown / FB2，还可以顺手修正书名和作者。</p></div>
+      <div class="step"><span class="n">3</span><h3 data-i18n="s3t">下载结果</h3><p data-i18n="s3d">转换完成后逐个下载，文件直接保存在你的设备上。</p></div>
+    </div>
+  </section>
+
+  <section id="formats">
+    <h2 class="sec" data-i18n="fmtT">支持的转换矩阵</h2>
+    <p class="secdesc" data-i18n="fmtD">横向是输入格式，纵向是输出格式。EPUB 是最通用的中间格式，任何输入都推荐先转 EPUB。</p>
+    <div class="mtx-wrap">
+      <table class="mtx">
+        <thead><tr>
+          <th data-i18n="mtxIn">输入 ↓ / 输出 →</th><th>EPUB</th><th>MOBI</th><th>HTML</th><th>TXT</th><th>Markdown</th><th>FB2</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>EPUB</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>MOBI / AZW3 / AZW / PRC</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>FB2</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>PDF <span data-i18n="mtxPdf">(提取文字)</span></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>DOCX (Word)</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>TXT</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>HTML</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Markdown</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="mtxnote" data-i18n="mtxNote">* MOBI 输出采用 PalmDOC 压缩的 MOBI6 格式，兼容 Kindle 全系及主流阅读软件；WEBP/SVG 图片在 MOBI 输出中会被跳过。扫描版 PDF 无文字层，无法转换。</p>
+  </section>
+
+  <section id="guide">
+    <h2 class="sec" data-i18n="gdT">电子书格式转换指南</h2>
+    <p class="secdesc" data-i18n="gdD">关于格式选择、Kindle 推送和 DRM 的实用说明。</p>
+    <div class="guide">
+      <div class="gcard">
+        <h3 data-i18n="g1t">为什么推荐 EPUB？</h3>
+        <p data-i18n="g1a">EPUB 是国际数字出版论坛（W3C）维护的开放标准，苹果图书、Google 图书、微信读书、Calibre、KOReader 等几乎全部现代阅读器都原生支持。它本质上是一个 ZIP 包，内含 XHTML 章节和样式表，支持回流排版，字号、字体、行距都能随阅读器调整。</p>
+        <p data-i18n="g1b">MOBI6 是 Kindle 早期的私有格式，功能停留在 2011 年：不支持现代 CSS、表格能力有限。除非你的目标是老款 Kindle，否则 EPUB 都是更好的归宿。</p>
+      </div>
+      <div class="gcard">
+        <h3 data-i18n="g2t">怎么把书传到 Kindle？</h3>
+        <p data-i18n="g2a">三种方式：① USB 连接电脑，把文件拷进 Kindle 的 <b>documents</b> 文件夹；② 把文件作为附件发到你 Kindle 账户专属的「发送至 Kindle」邮箱；③ 手机/电脑安装「发送至 Kindle」App 直接上传。较新的 Kindle 固件已直接支持 EPUB，无需转换成 MOBI。</p>
+        <p data-i18n="g2b">提示：「发送至 Kindle」对 EPUB 会自动做格式优化，MOBI 则按原样导入。</p>
+      </div>
+      <div class="gcard">
+        <h3 data-i18n="g3t">关于 DRM：为什么有的书转不了？</h3>
+        <p data-i18n="g3a">从 Amazon、Google Play 图书等商店购买的电子书大多带 DRM（数字版权管理），与你购买的账号绑定。转换或去除 DRM 在大多数国家/地区违反服务条款甚至法律，本工具不支持、也不会尝试解析加密文件——遇到时会明确报错。</p>
+        <p data-i18n="g3b">可以放心转换的：自己制作的文档、公版书（古腾堡计划等）、从支持无 DRM 下载的商店（如 Leanpub、 Standard Ebooks）购买的书。</p>
+      </div>
+      <div class="gcard">
+        <h3 data-i18n="g4t">隐私：本地转换意味着什么？</h3>
+        <p data-i18n="g4a">传统在线转换网站会把你的文件上传到他们的服务器——商业合同草稿、未出版书稿、个人日记都可能因此离开你的设备。本站的全部解析代码运行在你的浏览器标签页里，文件永远不会被发送到任何服务器。</p>
+        <p data-i18n="g4b">不信可以验证：打开浏览器开发者工具的「网络」面板再执行转换，看不到任何上传请求；或者直接断网使用。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2 class="sec" data-i18n="faqT">常见问题</h2>
+    <details class="faq">
+      <summary data-i18n="q1">转换时我的电子书会被上传到服务器吗？</summary>
+      <div class="a" data-i18n="a1">不会。本工具的所有解析与转换都在你的浏览器里完成，文件不会离开你的设备。你可以断网后使用，也可以在浏览器开发者工具的网络面板里确认没有任何文件上传请求。</div>
+    </details>
+    <details class="faq">
+      <summary data-i18n="q2">为什么有些 MOBI/AZW3 文件无法转换？</summary>
+      <div class="a" data-i18n="a2">最常见的原因是 DRM 版权保护：从商店购买并绑定账号的电子书通常加了加密，任何工具都不能也不应该转换受 DRM 保护的文件。本工具只支持无 DRM 的文件（自己制作的、公共领域的、或明确允许转换的电子书）。</div>
+    </details>
+    <details class="faq">
+      <summary data-i18n="q3">EPUB 和 MOBI 应该选哪个？</summary>
+      <div class="a" data-i18n="a3">EPUB 是国际通用的开放格式，苹果图书、Google 图书、微信读书、Calibre 及绝大多数安卓阅读器都支持，优先选 EPUB。MOBI 主要用于向 Kindle 老设备推送；较新的 Kindle 固件也已直接支持 EPUB，可通过「发送至 Kindle」服务推送。</div>
+    </details>
+    <details class="faq">
+      <summary data-i18n="q4">PDF 转成电子书后排版乱了怎么办？</summary>
+      <div class="a" data-i18n="a4">PDF 是按固定页面排版的格式，转成可回流排版的电子书时只能提取文字流，原页面布局、多栏、图片位置都可能变化。建议转换后检查章节划分；扫描版 PDF 没有文字层，无法提取内容。</div>
+    </details>
+    <details class="faq">
+      <summary data-i18n="q5">转换后的 MOBI 文件如何传到 Kindle？</summary>
+      <div class="a" data-i18n="a5">可以用 USB 数据线把文件拷贝到 Kindle 的 documents 文件夹，也可以把文件发送到你的「发送至 Kindle」邮箱，或使用 Amazon 网页版/App 的发送至 Kindle 上传功能。</div>
+    </details>
+    <details class="faq">
+      <summary data-i18n="q6">支持批量转换吗？有没有文件大小限制？</summary>
+      <div class="a" data-i18n="a6">支持。一次可以拖入多个文件按同一目标格式依次转换。转换在本地进行，速度取决于你的设备性能；建议单个文件不超过 150MB，超大电子书在低端设备上可能较慢。</div>
+    </details>
+  </section>
+</main>
+
+<footer class="kg-foot">
+  <div class="kg-foot-in">
+    <img src="favicon.png?v=1" alt="魁歌电子书转换吉祥物">
+    <p class="kg-foot-brand" data-i18n="footBrand">魁歌在线电子书格式转换工具</p>
+    <nav class="kg-foot-links">
+      <a href="https://kuige.me/" target="_blank" rel="noopener" data-i18n="footHome">魁歌主页</a>
+      <a href="https://icongems.kuige.me/" target="_blank" rel="noopener">IconGems</a>
+      <a href="https://picsqueeze.kuige.me/" target="_blank" rel="noopener">PicSqueeze</a>
+      <a href="https://markgone.kuige.me/" target="_blank" rel="noopener">MarkGone</a>
+      <a href="https://shareforge.kuige.me/" target="_blank" rel="noopener">ShareForge</a>
+    </nav>
+    <p class="kg-foot-copy">© 2026 魁歌 KuiGe · 用 AI 构建 · <a href="https://kuige.me/" style="color:inherit">kuige.me</a></p>
+  </div>
+</footer>
+<script id="engineSrc">
+/* BookMill engine — pure JS, no DOM access at load time.
+ * Deps injected via BM_ENGINE.setDeps({JSZip, DOMParser, XMLSerializer, pdfjs, pdfWorker, mammoth, marked}).
+ * Round-trip tested in Node via scripts/test-engine.mjs — keep this block framework-free. */
+window.BM_ENGINE = (function(){
+'use strict';
+
+/* ── deps ── */
+const D = { JSZip:null, DOMParser:null, XMLSerializer:null, pdfjs:null, pdfWorker:'', mammoth:null, marked:null };
+function setDeps(d){ for (const k in D) if (d[k] != null) D[k] = d[k]; }
+function DP(){ return D.DOMParser || window.DOMParser; }
+function XS(){ return D.XMLSerializer || window.XMLSerializer; }
+const TE = new TextEncoder();
+function dec(enc, bytes){ try { return new TextDecoder(enc).decode(bytes); } catch(e){ return new TextDecoder('utf-8').decode(bytes); } }
+function decodeTextAuto(bytes){
+  try { return new TextDecoder('utf-8', {fatal:true}).decode(bytes); }
+  catch(e){ try { return new TextDecoder('gb18030').decode(bytes); } catch(e2){ return new TextDecoder('windows-1252').decode(bytes); } }
+}
+function u16(v,o){ return (v[o]<<8)|v[o+1]; }
+function u32(v,o){ return ((v[o]<<24)|(v[o+1]<<16)|(v[o+2]<<8)|v[o+3])>>>0; }
+function u16wr(v,o,x){ v[o]=((x>>8)&255); v[o+1]=(x&255); }
+function u32wr(v,o,x){ v[o]=((x>>>24)&255); v[o+1]=((x>>>16)&255); v[o+2]=((x>>>8)&255); v[o+3]=(x&255); }
+function latin1(v,o,len){ let s=''; const end=Math.min(o+len,v.length); for(let i=o;i<end;i++) s+=String.fromCharCode(v[i]); return s; }
+function concatBytes(list){
+  let n=0; for (const b of list) n+=b.length;
+  const out=new Uint8Array(n); let o=0;
+  for (const b of list){ out.set(b,o); o+=b.length; }
+  return out;
+}
+function bytesToBase64(bytes){
+  let bin=''; const CH=0x8000;
+  for (let i=0;i<bytes.length;i+=CH) bin += String.fromCharCode.apply(null, bytes.subarray(i,i+CH));
+  if (typeof btoa === 'function') return btoa(bin);
+  return Buffer.from(bin,'binary').toString('base64');
+}
+function base64ToBytes(str){
+  str = str.replace(/\s+/g,'');
+  if (typeof atob === 'function'){ const bin=atob(str); const out=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) out[i]=bin.charCodeAt(i); return out; }
+  return new Uint8Array(Buffer.from(str,'base64'));
+}
+function uuid(){
+  if (globalThis.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return (c==='x'?r:(r&3|8)).toString(16);});
+}
+function xmlEsc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function nowIso(){ return new Date().toISOString().replace(/\.\d+Z$/,'Z'); }
+function sniffImage(b){
+  if (!b || b.length<4) return null;
+  if (b[0]===0xFF && b[1]===0xD8) return 'image/jpeg';
+  if (b[0]===0x89 && b[1]===0x50 && b[2]===0x4E) return 'image/png';
+  if (b[0]===0x47 && b[1]===0x49 && b[2]===0x46) return 'image/gif';
+  if (b.length>12 && latin1(b,0,4)==='RIFF' && latin1(b,8,4)==='WEBP') return 'image/webp';
+  if (b[0]===0x42 && b[1]===0x4D) return 'image/bmp';
+  if (b.length>4 && (latin1(b,0,5).trim().startsWith('<svg') || latin1(b,0,5).trim().startsWith('<?xml'))) return 'image/svg+xml';
+  return null;
+}
+const MIME_EXT = {'image/jpeg':'jpg','image/png':'png','image/gif':'gif','image/webp':'webp','image/svg+xml':'svg','image/bmp':'bmp'};
+const EXT_MIME = {'jpg':'image/jpeg','jpeg':'image/jpeg','png':'image/png','gif':'image/gif','webp':'image/webp','svg':'image/svg+xml','bmp':'image/bmp'};
+
+/* ── book model ── */
+function newBook(title, author, language){
+  return { title: title||'', author: author||'', language: language||'', cover: null,
+           chapters: [], images: new Map(), _n: 0 };
+}
+function addImage(images, mime, bytes){
+  images._n = (images._n || 0) + 1;
+  const id = 'i' + images._n;
+  images.set(id, {mime, bytes});
+  return id;
+}
+
+/* ── DOM helpers ── */
+function parseDoc(html){
+  let dp;
+  try { dp = new (DP())(); return dp.parseFromString(html, 'text/html'); }
+  catch(e){
+    try { return dp.parseFromString('<html><body></body></html>', 'text/html'); }
+    catch(e2){ if (typeof console !== 'undefined' && console.warn) console.warn('parseDoc failed:', e2 && e2.message); return null; }
+  }
+}
+function resolvePath(dir, rel){
+  if (!rel) return '';
+  rel = String(rel).split('#')[0];
+  if (/^[a-z][a-z0-9+.-]*:/i.test(rel)) return rel;          // absolute URL / data:
+  const parts = (dir ? dir.split('/') : []).concat(rel.split('/'));
+  const out = [];
+  for (const p of parts){ if (!p || p==='.') continue; if (p==='..') out.pop(); else out.push(p); }
+  return out.join('/');
+}
+function dirOf(path){ const i = path.lastIndexOf('/'); return i<0 ? '' : path.slice(0, i+1); }
+
+const DROP_TAGS = new Set(['script','style','iframe','object','embed','form','input','button','select','textarea','video','audio','canvas','svg','math','link','meta','title','head','base','noscript','template','map','area','applet','frame','frameset']);
+const KEEP_TAGS = new Set(['p','br','hr','h1','h2','h3','h4','h5','h6','blockquote','ul','ol','li','strong','b','em','i','u','s','del','strike','sub','sup','a','img','table','thead','tbody','tfoot','tr','td','th','caption','pre','code','figure','figcaption','small','center','cite','q','abbr','time','dl','dt','dd']);
+const UNWRAP_TAGS = new Set(['div','span','section','article','aside','header','footer','main','nav','font','big','tt','body','html','label','details','summary','ruby','rt','rp','mark','ins','kbd','samp','var','address','dir','menu']);
+const KEEP_ATTRS = { img:['alt'], a:['href','title'], td:['colspan','rowspan'], th:['colspan','rowspan'], ol:['start'], li:['value'] };
+
+/* Sanitize a chapter: returns cleaned HTML string. Images are registered into ctx.images
+ * and rewritten to src="bkimg:<id>". ctx: {images, resMap(Map path→{mime,bytes}), dir} */
+function sanitizeHtml(html, ctx){
+  const doc = parseDoc(html);
+  const body = doc ? (doc.body || doc.documentElement) : null;
+  if (!body) return '';
+  const imgIdByPath = new Map();
+  function walk(node){
+    for (const child of Array.from(node.childNodes)){
+      if (child.nodeType === 3){ continue; }
+      if (child.nodeType !== 1){ child.remove(); continue; }
+      const tag = child.tagName.toLowerCase();
+      if (DROP_TAGS.has(tag)){ child.remove(); continue; }
+      if (tag === 'img'){
+        const raw = child.getAttribute('src') || child.getAttribute('data-src') || '';
+        let nid = null, alt = (child.getAttribute('alt')||'').slice(0,150);
+        if (raw.startsWith('bkimg:')){ nid = raw.slice(6); }
+        else if (raw.startsWith('data:')){
+          const m = /^data:([^;,]+)?(;base64)?,(.*)$/s.exec(raw);
+          if (m){ const mime = m[1] || 'application/octet-stream';
+            try { nid = addImage(ctx.images, mime, m[2] ? base64ToBytes(m[3]) : TE.encode(decodeURIComponent(m[3]))); } catch(e){} }
+        } else if (ctx.keepRemote && /^(https?:)?\/\//i.test(raw)){
+          const img2 = doc.createElement('img');
+          img2.setAttribute('src', raw);
+          if (alt) img2.setAttribute('alt', alt);
+          child.replaceWith(img2);
+          continue;
+        } else {
+          const p = resolvePath(ctx.dir || '', raw);
+          if (ctx.resMap){
+            const res = ctx.resMap.get(p) || ctx.resMap.get(decodeURIComponent(p));
+            if (res){ nid = imgIdByPath.get(p) || addImage(ctx.images, res.mime, res.bytes); imgIdByPath.set(p, nid); }
+          }
+        }
+        const img = doc.createElement('img');
+        if (nid) img.setAttribute('src', 'bkimg:' + nid);
+        if (alt) img.setAttribute('alt', alt);
+        child.replaceWith(img);
+        continue;
+      }
+      if (KEEP_TAGS.has(tag)){
+        const allowed = KEEP_ATTRS[tag] || [];
+        for (const a of Array.from(child.attributes)){
+          if (!allowed.includes(a.name)) child.removeAttribute(a.name);
+          else if (a.name === 'href' && !/^(https?:|mailto:)/i.test(a.value)) child.removeAttribute(a.name);
+        }
+        if (tag === 's' || tag === 'strike'){ const ns = doc.createElement('s'); ns.append(...child.childNodes); child.replaceWith(ns); walk(ns); continue; }
+        else if (tag === 'b'){ const ns = doc.createElement('strong'); ns.append(...child.childNodes); child.replaceWith(ns); walk(ns); continue; }
+        else if (tag === 'i'){ const ns = doc.createElement('em'); ns.append(...child.childNodes); child.replaceWith(ns); walk(ns); continue; }
+        else if (tag === 'center'){ const ns = doc.createElement('p'); ns.style = 'text-align:center'; ns.append(...child.childNodes); child.replaceWith(ns); walk(ns); continue; }
+        walk(child);
+      } else if (UNWRAP_TAGS.has(tag)){
+        walk(child);
+        child.replaceWith(...child.childNodes);
+      } else {
+        child.remove();
+      }
+    }
+  }
+  walk(body);
+  return body.innerHTML;
+}
+function firstHeading(html){
+  const doc = parseDoc(html);
+  if (!doc) return '';
+  const h = doc.querySelector('h1,h2,h3,h4,h5,h6');
+  const t = h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+  return t ? t.slice(0,120) : '';
+}
+function chapterHasHeading(html){ return !!firstHeading(html); }
+
+/* ── HTML → plain text ── */
+const BLOCK = new Set(['p','div','h1','h2','h3','h4','h5','h6','ul','ol','li','blockquote','pre','table','tr','figcaption','caption','dl','dt','dd','section','article','hr']);
+function htmlToText(html){
+  const doc = parseDoc(html);
+  const body = doc ? (doc.body || doc.documentElement) : null;
+  if (!body) return '';
+  const out = [];
+  function walk(node, inPre){
+    for (const child of Array.from(node.childNodes)){
+      if (child.nodeType === 3){
+        out.push(inPre ? child.textContent : child.textContent.replace(/\s+/g,' '));
+      } else if (child.nodeType === 1){
+        const tag = child.tagName.toLowerCase();
+        if (tag === 'br'){ out.push('\n'); continue; }
+        if (tag === 'hr'){ out.push('\n\n——\n\n'); continue; }
+        if (tag === 'img'){ const alt = child.getAttribute('alt'); if (alt) out.push('[' + alt + ']'); continue; }
+        if (tag === 'li') out.push('\n• ');
+        else if (BLOCK.has(tag)) out.push('\n\n');
+        walk(child, inPre || tag === 'pre');
+        if (tag === 'td' || tag === 'th') out.push('\t');
+      }
+    }
+  }
+  walk(body, false);
+  return out.join('').replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+}
+
+/* ── HTML → Markdown ── */
+function htmlToMd(html){
+  const doc = parseDoc(html);
+  const body = doc ? (doc.body || doc.documentElement) : null;
+  if (!body) return '';
+  const out = [];
+  function inline(node, inPre){
+    let s = '';
+    for (const child of Array.from(node.childNodes)){
+      if (child.nodeType === 3){ s += inPre ? child.textContent : child.textContent.replace(/\s+/g,' '); }
+      else if (child.nodeType === 1){
+        const tag = child.tagName.toLowerCase();
+        const inner = inline(child, inPre || tag === 'pre');
+        if (tag === 'br') s += '  \n';
+        else if (tag === 'strong' || tag === 'b') s += inner.trim() ? '**' + inner.trim() + '**' : inner;
+        else if (tag === 'em' || tag === 'i') s += inner.trim() ? '*' + inner.trim() + '*' : inner;
+        else if (tag === 's' || tag === 'del' || tag === 'strike') s += inner.trim() ? '~~' + inner.trim() + '~~' : inner;
+        else if (tag === 'code') s += '`' + inner + '`';
+        else if (tag === 'a'){ const href = child.getAttribute('href')||''; s += href ? '[' + inner + '](' + href + ')' : inner; }
+        else if (tag === 'img') s += child.getAttribute('alt') ? '![' + child.getAttribute('alt') + ']()' : '';
+        else s += inner;
+      }
+    }
+    return s;
+  }
+  function walk(node, depth){
+    for (const child of Array.from(node.childNodes)){
+      if (child.nodeType === 3){ const t = child.textContent.replace(/\s+/g,' ').trim(); if (t) out.push(t); continue; }
+      if (child.nodeType !== 1) continue;
+      const tag = child.tagName.toLowerCase();
+      if (tag === 'br'){ out.push('  \n'); continue; }
+      if (/^h[1-6]$/.test(tag)){ out.push('\n\n' + '#'.repeat(+tag[1]) + ' ' + inline(child).trim() + '\n\n'); }
+      else if (tag === 'p' || tag === 'div'){ const t = inline(child).trim(); if (t) out.push('\n\n' + t + '\n\n'); walk(child, depth); }
+      else if (tag === 'hr'){ out.push('\n\n---\n\n'); }
+      else if (tag === 'blockquote'){ out.push('\n\n' + inline(child).trim().split('\n').map(l=>'> ' + l).join('\n') + '\n\n'); }
+      else if (tag === 'pre'){ out.push('\n\n```\n' + child.textContent.replace(/\n$/,'') + '\n```\n\n'); }
+      else if (tag === 'ul' || tag === 'ol'){
+        let n = 1;
+        for (const li of child.children){
+          if (li.tagName.toLowerCase() !== 'li') continue;
+          out.push('\n' + (tag === 'ol' ? (n++) + '. ' : '- ') + inline(li).trim().replace(/\n+/g,'\n  '));
+        }
+        out.push('\n\n');
+      }
+      else if (tag === 'img'){ const alt = child.getAttribute('alt'); if (alt) out.push('![' + alt + ']()'); }
+      else if (tag === 'table'){
+        const rows = child.querySelectorAll('tr');
+        let first = true;
+        for (const tr of rows){
+          const cells = Array.from(tr.children).map(td => inline(td).trim().replace(/\|/g,'\\|'));
+          out.push('\n| ' + cells.join(' | ') + ' |');
+          if (first){ out.push('\n|' + cells.map(()=>' --- ').join('|') + '|'); first = false; }
+        }
+        out.push('\n\n');
+      }
+      else if (tag === 'li'){ out.push('\n- ' + inline(child).trim()); }
+      else { walk(child, depth + 1); }
+    }
+  }
+  walk(body, 0);
+  return out.join('').replace(/\n{3,}/g,'\n\n').trim() + '\n';
+}
+
+/* ── PalmDOC ── */
+function palmDecompress(data){
+  const out = []; const n = data.length; let p = 0;
+  while (p < n){
+    const c = data[p++];
+    if (c >= 1 && c <= 8){ for (let k=0;k<c && p<n;k++) out.push(data[p++]); }
+    else if (c < 128) out.push(c);
+    else if (c >= 192){ out.push(0x20); out.push(c ^ 0x80); }
+    else if (p < n){
+      const pair = ((c << 8) | data[p]); p++;
+      const m = (pair >> 3) & 0x7ff, len = (pair & 7) + 3;
+      const start = out.length - m;
+      if (start < 0) break;
+      if (m > len){ for (let k=0;k<len;k++) out.push(out[start + k]); }
+      else { for (let k=0;k<len;k++) out.push(out[start + (k % m)]); }
+    }
+  }
+  return Uint8Array.from(out);
+}
+function palmCompress(data){
+  const out = []; const n = data.length; let i = 0;
+  const idx = new Map();
+  const addIdx = pos => {
+    if (pos + 3 > n) return;
+    const key = (data[pos]<<16)|(data[pos+1]<<8)|data[pos+2];
+    let a = idx.get(key);
+    if (!a){ a = []; idx.set(key, a); }
+    a.push(pos);
+    if (a.length > 48) a.splice(0, a.length - 48);
+  };
+  while (i < n){
+    let bestLen = 0, bestDist = 0;
+    if (i + 3 <= n){
+      const cands = idx.get((data[i]<<16)|(data[i+1]<<8)|data[i+2]);
+      if (cands){
+        const maxLen = Math.min(10, n - i);
+        for (let ci = cands.length - 1; ci >= 0; ci--){
+          const dist = i - cands[ci];
+          if (dist > 2047) break;
+          if (dist < 3) continue;
+          const cap = Math.min(maxLen, dist);
+          let l = 0;
+          while (l < cap && data[cands[ci] + l] === data[i + l]) l++;
+          if (l > bestLen){ bestLen = l; bestDist = dist; if (bestLen >= 10) break; }
+        }
+      }
+      if (bestLen >= 3){
+        const pair = 0x8000 | (bestDist << 3) | (bestLen - 3);
+        out.push((pair >> 8) & 0xFF, pair & 0xFF);
+        for (let k=0;k<bestLen;k++) addIdx(i + k);
+        i += bestLen;
+        continue;
+      }
+    }
+    const b = data[i];
+    if (b >= 9 && b <= 0x7F){
+      if (b === 0x20 && i + 1 < n && data[i+1] >= 0x61 && data[i+1] <= 0x7A){
+        out.push(0x80 | data[i+1]); addIdx(i); addIdx(i+1); i += 2; continue;
+      }
+      out.push(b);
+    } else if (b === 0){
+      out.push(0);
+    } else {
+      out.push(0x01, b);
+    }
+    addIdx(i);
+    i++;
+  }
+  return Uint8Array.from(out);
+}
+
+/* ── HUFF/CDIC (compression 17480) ── */
+function loadHuffCdic(rec, huffOff, huffCnt){
+  const huff = rec(huffOff);
+  if (latin1(huff,0,4) !== 'HUFF') throw new Error('bad HUFF');
+  const off1 = u32(huff,8), off2 = u32(huff,12);
+  const dict1 = [];
+  for (let i=0;i<256;i++){
+    const v = u32(huff, off1 + i*4);
+    const codelen = v & 0x1f, term = v & 0x80, mc = v >>> 8;
+    if (!codelen) throw new Error('bad HUFF dict1');
+    dict1.push({ codelen, term, maxcode: ((mc + 1) * Math.pow(2, 32 - codelen)) - 1 });
+  }
+  const mincode = [0], maxcodeA = [0];
+  for (let c=1;c<=32;c++){
+    const minv = c <= 32 ? u32(huff, off2 + (2*c-2)*4) : 0;
+    const maxv = c <= 32 ? u32(huff, off2 + (2*c-1)*4) : 0;
+    mincode[c] = minv * Math.pow(2, 32 - c);
+    maxcodeA[c] = ((maxv + 1) * Math.pow(2, 32 - c)) - 1;
+  }
+  const dictionary = [];
+  for (let r=1;r<huffCnt;r++){
+    const cdic = rec(huffOff + r);
+    if (latin1(cdic,0,4) !== 'CDIC') throw new Error('bad CDIC');
+    const phrases = u32(cdic,8), bits = u32(cdic,12);
+    const n = Math.min(1 << bits, phrases - dictionary.length);
+    for (let j=0;j<n;j++){
+      const off = u16(cdic, 16 + j*2);
+      const blen = u16(cdic, 16 + off);
+      dictionary.push({ raw: cdic.subarray(18 + off, 18 + off + (blen & 0x7fff)), flag: blen & 0x8000, done:false, slice:null });
+    }
+  }
+  function unpackBits(data, depth){
+    if (depth > 96) throw new Error('huff depth');
+    const ext = concatBytes([data, new Uint8Array(8)]);
+    let pos = 0, n = 32;
+    let bitsleft = data.length * 8;
+    const out = [];
+    while (true){
+      if (n <= 0){ pos += 4; n += 32; }
+      const hi = u32(ext,pos), lo = u32(ext,pos+4);
+      let code;
+      if (n >= 32) code = lo;
+      else if (n === 0) code = hi;
+      else code = (((hi << n) | (lo >>> (32 - n))) >>> 0);
+      const d1 = dict1[code >>> 24];
+      let codelen = d1.codelen, maxcode = d1.maxcode;
+      if (!d1.term){
+        while (code < mincode[codelen] && codelen < 32) codelen++;
+        maxcode = maxcodeA[codelen];
+      }
+      n -= codelen; bitsleft -= codelen;
+      if (bitsleft < 0) break;
+      const r = Math.floor((maxcode - code) / Math.pow(2, 32 - codelen));
+      const entry = dictionary[r];
+      if (!entry) break;
+      if (!entry.flag){
+        if (!entry.done){ entry.done = true; entry.slice = unpackBits(entry.raw, depth + 1); }
+        out.push(entry.done ? entry.slice : entry.raw);
+      } else out.push(entry.raw);
+    }
+    return concatBytes(out);
+  }
+  return data => unpackBits(data, 0);
+}
+
+return {
+  setDeps,
+  u16, u32, u16wr, u32wr, latin1, concatBytes, bytesToBase64, base64ToBytes, uuid, xmlEsc, nowIso,
+  sniffImage, MIME_EXT, EXT_MIME, decodeTextAuto, dec, TE, D, DROP_TAGS,
+  newBook, addImage, parseDoc, resolvePath, dirOf,
+  sanitizeHtml, firstHeading, chapterHasHeading, htmlToText, htmlToMd,
+  palmDecompress, palmCompress, loadHuffCdic
+};
+})();
+</script>
+<script>
+/* BM_ENGINE part B — parsers & writers (same engine, assigned onto the namespace). */
+(function(){
+'use strict';
+const E = window.BM_ENGINE;
+const { u16, u32, u16wr, u32wr, latin1, concatBytes, bytesToBase64, base64ToBytes, uuid, xmlEsc, nowIso,
+        sniffImage, MIME_EXT, EXT_MIME, decodeTextAuto, dec, TE, D, DROP_TAGS,
+        newBook, addImage, parseDoc, resolvePath, dirOf, sanitizeHtml, firstHeading, chapterHasHeading,
+        htmlToText, htmlToMd, palmDecompress, palmCompress, loadHuffCdic } = E;
+
+const KNOWN_EXT = new Set(['epub','mobi','azw3','azw','prc','fb2','txt','text','html','htm','xhtml','md','markdown','pdf','docx']);
+const DRM_MSG = 'This book is DRM-protected (encrypted). Converting DRM-protected files is not supported.';
+
+/* ── shared helpers ── */
+const CHAPTER_RE = /^\s*(第\s*[0-9０-９一二三四五六七八九十百千万两零〇]+\s*[章节卷回部集幕]|序章|序言|前言|楔子|引子|尾声|后记|番外|CHAPTER\s+[0-9IVXLC]+|Chapter\s+[0-9IVXLC]+|Chapter\s+(One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve)|PART\s+[0-9IVXLC]+|Part\s+[0-9IVXLC]+).{0,50}$/i;
+function looksLikeChapter(line){
+  const t = line.trim();
+  if (!t || t.length > 60) return false;
+  return CHAPTER_RE.test(t);
+}
+function langQuick(s){ return /[\u4e00-\u9fff]/.test(s.slice(0, 4000)) ? 'zh' : 'en'; }
+function byLocal(root, ln){
+  const out = [];
+  const start = root && root.documentElement ? root.documentElement : root;
+  const walk = node => {
+    const kids = node.children || [];
+    for (const child of kids){
+      if (child.localName === ln) out.push(child);
+      walk(child);
+    }
+  };
+  if (start) walk(start);
+  return out;
+}
+function firstLocal(root, ln){ return byLocal(root, ln)[0] || null; }
+function imgHrefAttr(el){
+  for (const a of (el.attributes || [])) if (a.name === 'href' || a.name.endsWith(':href')) return a.value;
+  return '';
+}
+/* split sanitized html into chapters by top-level h1/h2 */
+function splitByHeadings(html){
+  const doc = parseDoc(html);
+  const body = doc ? (doc.body || doc.documentElement) : null;
+  if (!body) return [];
+  const chapters = [];
+  let cur = null;
+  for (const el of Array.from(body.childNodes)){
+    if (el.nodeType === 3 && !el.textContent.trim()) continue;
+    if (el.nodeType === 1){
+      const tag = el.tagName.toLowerCase();
+      if (DROP_TAGS.has(tag)) continue;
+      if ((tag === 'h1' || tag === 'h2') && cur){
+        chapters.push(cur);
+        cur = { title: el.textContent.replace(/\s+/g,' ').trim().slice(0,120), nodes: [] };
+        continue;
+      }
+    }
+    if (!cur) cur = { title: '', nodes: [] };
+    cur.nodes.push(el);
+  }
+  if (cur && (cur.nodes.length || cur.title)) chapters.push(cur);
+  return chapters.map(c => ({ title: c.title, html: c.nodes.map(n => n.nodeType === 1 ? n.outerHTML : '').join('\n') }))
+                 .filter(c => c.html.replace(/<[^>]+>/g,'').trim() || c.html.includes('<img') || c.title);
+}
+
+/* ── trailing bytes (MOBI) ── */
+function sizeOfTrailingEntry(d){
+  let num = 0;
+  const start = Math.max(0, d.length - 4);
+  for (let i = start; i < d.length; i++){
+    if (d[i] & 0x80) num = 0;
+    num = (num << 7) | (d[i] & 0x7f);
+  }
+  return num;
+}
+function trimTrailing(data, flags){
+  if (!flags || !data.length) return data;
+  let f = flags, trailers = 0;
+  const multibyte = f & 1;
+  while (f > 1){ if (f & 2) trailers++; f >>= 1; }
+  let d = data;
+  for (let t = 0; t < trailers; t++){
+    const num = sizeOfTrailingEntry(d);
+    if (num <= 0 || num >= d.length) break;
+    d = d.subarray(0, d.length - num);
+  }
+  if (multibyte && d.length){
+    const num = (d[d.length - 1] & 3) + 1;
+    d = d.subarray(0, Math.max(0, d.length - num));
+  }
+  return d;
+}
+function mobiLang(locale){
+  const id = locale & 0xFF;
+  const map = {4:'zh',9:'en',1:'ar',3:'ca',5:'cs',6:'da',7:'de',8:'el',10:'es',12:'fr',14:'hu',15:'is',16:'it',17:'ja',18:'ko',19:'nl',20:'no',21:'pl',22:'pt',25:'ru',26:'hr',27:'sk',28:'sq',29:'sv',30:'th',31:'tr',33:'id',42:'vi'};
+  return map[id] || '';
+}
+function parseMobiHeader(r0, numRec){
+  const h = { compression: u16(r0,0), textLength: u32(r0,4), textRecs: u16(r0,8), encryption: u16(r0,12),
+              type: 0, version: 0, codepage: 1252, encoding: 'windows-1252', title: '', author: '',
+              coverOffset: null, kf8Boundary: null, firstImage: null, huffOff: 0, huffCnt: 0, extraFlags: 0, locale: 0, hasMobi: false };
+  if (r0.length < 132 || latin1(r0,16,4) !== 'MOBI') return h;
+  h.hasMobi = true;
+  h.hdrLen = u32(r0,0x14);
+  h.type = u32(r0,0x18);
+  h.codepage = u32(r0,0x1C);
+  h.version = u32(r0,0x24);
+  h.encoding = h.codepage === 65001 ? 'utf-8' : 'windows-1252';
+  h.locale = u32(r0,0x5C);
+  const fi = u32(r0,0x6C);
+  if (fi !== 0xFFFFFFFF && fi < numRec) h.firstImage = fi;
+  h.huffOff = u32(r0,0x70); h.huffCnt = u32(r0,0x74);
+  const toff = u32(r0,0x54), tlen = u32(r0,0x58);
+  if (toff > 0 && tlen > 0 && toff + tlen <= r0.length){
+    try { h.title = dec(h.encoding, r0.subarray(toff, toff + tlen)).trim(); } catch(e){}
+  }
+  const exthFlag = u32(r0,0x80);
+  if (exthFlag & 0x40){
+    const exthStart = 16 + h.hdrLen;
+    if (exthStart + 12 <= r0.length && latin1(r0, exthStart, 4) === 'EXTH'){
+      const cnt = u32(r0, exthStart + 8);
+      let p = exthStart + 12;
+      for (let i = 0; i < cnt && p + 8 <= r0.length; i++){
+        const id = u32(r0,p), size = u32(r0,p+4);
+        if (size < 8 || p + size > r0.length) break;
+        const ds = p + 8;
+        try {
+          if (id === 100) h.author = dec(h.encoding, r0.subarray(ds, p + size)).trim();
+          else if (id === 503) h.title = dec(h.encoding, r0.subarray(ds, p + size)).trim();
+          else if (id === 201 && size === 12) h.coverOffset = u32(r0, ds);
+          else if (id === 121 && size === 12) h.kf8Boundary = u32(r0, ds);
+        } catch(e){}
+        p += size;
+      }
+    }
+  }
+  if (h.hdrLen >= 0xE4 && h.version >= 5 && r0.length >= 0xF4) h.extraFlags = u16(r0, 0xF2);
+  return h;
+}
+
+/* ── MOBI / AZW3 / AZW / PRC / PalmDOC ── */
+async function parseMobi(bytes, name){
+  const v = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  if (v.length < 80) throw new Error('badFile');
+  const magic = latin1(v,60,8);
+  if (!magic.startsWith('BOOKMOBI') && !magic.startsWith('TEXtREAd')) throw new Error('notMobi');
+  const numRec = u16(v,76);
+  const rec = i => v.subarray(u32(v,78 + i*8), i + 1 < numRec ? u32(v,78 + (i+1)*8) : v.length);
+  let m = parseMobiHeader(rec(0), numRec);
+  if (m.encryption !== 0) throw new Error(DRM_MSG);
+  let base = 0;
+  if (m.type === 2 && m.kf8Boundary != null && m.kf8Boundary > 0 && m.kf8Boundary < numRec){
+    try {
+      const m2 = parseMobiHeader(rec(m.kf8Boundary), numRec);
+      if (m2.encryption === 0){ base = m.kf8Boundary; m = m2; }
+    } catch(e){}
+  }
+  const stem = name.replace(/\.[^.]+$/,'');
+  /* plain PalmDOC text book */
+  if (!m.hasMobi){
+    const parts = [];
+    for (let i = 1; i <= Math.min(m.textRecs, numRec - 1); i++) parts.push(m.compression === 2 ? palmDecompress(rec(i)) : rec(i));
+    return parseTxt(TE.encode(decodeTextAuto(concatBytes(parts))), name);
+  }
+  let huffFn = null;
+  if (m.compression === 17480){
+    if (!m.huffOff || !m.huffCnt) throw new Error('badHuff');
+    huffFn = loadHuffCdic(rec, m.huffOff + base, m.huffCnt);
+  } else if (m.compression !== 1 && m.compression !== 2){
+    throw new Error('badCompression');
+  }
+  const parts = [];
+  for (let i = 1; i <= m.textRecs && base + i < numRec; i++){
+    let d = trimTrailing(rec(base + i), m.extraFlags);
+    parts.push(m.compression === 2 ? palmDecompress(d) : m.compression === 1 ? d : huffFn(d));
+  }
+  const html = dec(m.encoding, concatBytes(parts));
+  const book = newBook(m.title || stem, m.author, mobiLang(m.locale));
+  /* images */
+  const recToId = new Map();
+  if (m.firstImage != null){
+    for (let i = m.firstImage; i < numRec; i++){
+      const d = rec(i);
+      const mime = sniffImage(d);
+      if (!mime) continue;
+      const id = addImage(book.images, mime, d);
+      recToId.set(i, id);
+    }
+    const covRec = m.firstImage + (m.coverOffset || 0);
+    if (recToId.has(covRec)) book.cover = book.images.get(recToId.get(covRec));
+  }
+  /* body html */
+  let bodyHtml = html;
+  const bm = /<body[^>]*>([\s\S]*?)<\/body>/i.exec(html);
+  if (bm) bodyHtml = bm[1];
+  if (m.firstImage != null){
+    bodyHtml = bodyHtml.replace(/<img\s[^>]*>/gi, tag => {
+      const ri = /recindex\s*=\s*["']?0*(\d+)/i.exec(tag);
+      if (!ri) return '';
+      const id = recToId.get(m.firstImage + parseInt(ri[1],10) - 1);
+      if (!id) return '';
+      const alt = /alt\s*=\s*"([^"]*)"/i.exec(tag);
+      return `<img src="bkimg:${id}"${alt ? ` alt="${xmlEsc(alt[1])}"` : ''}>`;
+    });
+  }
+  const chapters = [];
+  for (const part of bodyHtml.split(/<mbp:pagebreak\s*\/?>/i)){
+    const cleaned = sanitizeHtml(part, { images: book.images, resMap: null, dir: '' });
+    const hasText = cleaned.replace(/<[^>]+>/g,'').trim();
+    if (!hasText && !cleaned.includes('<img')) continue;
+    chapters.push({ title: firstHeading(cleaned), html: cleaned });
+  }
+  book.chapters = chapters.length ? chapters : [{ title: book.title || stem, html: `<p>${xmlEsc(stem)}</p>` }];
+  return book;
+}
+
+/* ── EPUB ── */
+async function parseEpub(bytes, name){
+  if (!D.JSZip) throw new Error('noZip');
+  let zip;
+  try { zip = await D.JSZip.loadAsync(bytes); }
+  catch(e){ throw new Error('badZip'); }
+  const readText = async p => { const f = zip.file(p); return f ? dec('utf-8', await f.async('uint8array')) : null; };
+  const readBin = async p => { const f = zip.file(p); return f ? await f.async('uint8array') : null; };
+  const contXml = (await readText('META-INF/container.xml')) || '';
+  const rootMatch = /full-path\s*=\s*"([^"]+)"/.exec(contXml);
+  const opfPath = rootMatch ? rootMatch[1] : null;
+  const opfText = opfPath ? await readText(opfPath) : null;
+  if (!opfText) throw new Error('noOpf');
+  const opfDir = dirOf(opfPath);
+  const doc = new (D.DOMParser || window.DOMParser)().parseFromString(opfText, 'application/xml');
+  if (doc.querySelector('parsererror')) throw new Error('noOpf');
+  const metaEl = firstLocal(doc, 'metadata') || doc.documentElement;
+  const stem = name.replace(/\.[^.]+$/,'');
+  const book = newBook(
+    ((firstLocal(metaEl,'title') || {}).textContent || '').trim() || stem,
+    ((firstLocal(metaEl,'creator') || {}).textContent || '').trim(),
+    ((firstLocal(metaEl,'language') || {}).textContent || '').trim());
+  const manifest = {};
+  for (const it of byLocal(doc, 'item')){
+    const id = it.getAttribute('id'), href = it.getAttribute('href');
+    if (!id || !href) continue;
+    manifest[id] = { href: resolvePath(opfDir, href), mt: it.getAttribute('media-type') || '', props: it.getAttribute('properties') || '' };
+  }
+  const spineEl = firstLocal(doc, 'spine');
+  const order = spineEl ? byLocal(spineEl,'itemref').map(r => r.getAttribute('idref')).filter(Boolean) : [];
+  /* image resources */
+  const resMap = new Map();
+  for (const id in manifest){
+    const it = manifest[id];
+    const ext = it.href.split('.').pop().toLowerCase();
+    if (it.mt.startsWith('image/') || EXT_MIME[ext]){
+      const b = await readBin(it.href);
+      if (b) resMap.set(it.href, { mime: sniffImage(b) || it.mt || EXT_MIME[ext] || 'application/octet-stream', bytes: b });
+    }
+  }
+  /* cover */
+  let coverHref = null;
+  for (const id in manifest){
+    if ((manifest[id].props || '').split(/\s+/).includes('cover-image')) coverHref = manifest[id].href;
+  }
+  if (!coverHref){
+    const cm = byLocal(metaEl,'meta').find(mm => mm.getAttribute('name') === 'cover');
+    if (cm && manifest[cm.getAttribute('content')]) coverHref = manifest[cm.getAttribute('content')].href;
+  }
+  if (!coverHref){ for (const p of resMap.keys()){ if (/cover/i.test(p)){ coverHref = p; break; } } }
+  if (coverHref && resMap.get(coverHref)) book.cover = resMap.get(coverHref);
+  /* title map from nav/ncx */
+  const titleMap = new Map();
+  const navId = Object.keys(manifest).find(id => (manifest[id].props || '').split(/\s+/).includes('nav'));
+  if (navId){
+    const navText = await readText(manifest[navId].href);
+    if (navText){
+      const nd = parseDoc(navText);
+      const navDir = dirOf(manifest[navId].href);
+      for (const a of nd.querySelectorAll('nav a')){
+        const p = resolvePath(navDir, a.getAttribute('href') || '');
+        const t = a.textContent.replace(/\s+/g,' ').trim();
+        if (p && t) titleMap.set(p, t);
+      }
+    }
+  }
+  if (!titleMap.size){
+    const ncxId = Object.keys(manifest).find(id => manifest[id].mt === 'application/x-dtbncx+xml');
+    if (ncxId){
+      const ncxText = await readText(manifest[ncxId].href);
+      if (ncxText){
+        const nd = new (D.DOMParser || window.DOMParser)().parseFromString(ncxText, 'application/xml');
+        const ncxDir = dirOf(manifest[ncxId].href);
+        for (const np of byLocal(nd,'navPoint')){
+          const lbl = firstLocal(np,'text');
+          const cnt = firstLocal(np,'content');
+          const src = cnt ? (cnt.getAttribute('src') || '') : '';
+          const t = lbl ? (lbl.textContent || '').replace(/\s+/g,' ').trim() : '';
+          if (src && t) titleMap.set(resolvePath(ncxDir, src), t);
+        }
+      }
+    }
+  }
+  /* chapters */
+  const chapters = [];
+  const seen = new Set();
+  for (const idref of order){
+    const it = manifest[idref];
+    if (!it || !/x?html/i.test(it.mt)) continue;
+    const key = it.href.split('#')[0];
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const text = await readText(key);
+    if (!text) continue;
+    const dd = parseDoc(text);
+    const body = dd.body || dd.documentElement;
+    if (!body) continue;
+    const cleaned = sanitizeHtml(body.innerHTML, { images: book.images, resMap, dir: dirOf(key) });
+    const textLen = cleaned.replace(/<[^>]+>/g,'').trim();
+    const imgCount = (cleaned.match(/<img/g) || []).length;
+    /* first content item that is image-only → treat as cover page, not a chapter */
+    if (!chapters.length && !textLen && imgCount === 1){
+      if (!book.cover){
+        const mid = /src="bkimg:([^"]+)"/.exec(cleaned);
+        if (mid && book.images.get(mid[1])) book.cover = book.images.get(mid[1]);
+      }
+      continue;
+    }
+    if (!textLen && !imgCount && chapters.length) continue;
+    const title = titleMap.get(it.href) || titleMap.get(key) || firstHeading(cleaned);
+    chapters.push({ title, html: cleaned });
+  }
+  book.chapters = chapters.length ? chapters : [{ title: book.title, html: `<p>${xmlEsc(stem)}</p>` }];
+  return book;
+}
+
+/* ── FB2 ── */
+function fb2Inline(node, ctx){
+  let s = '';
+  for (const child of Array.from(node.childNodes)){
+    if (child.nodeType === 3){ s += xmlEsc(child.textContent.replace(/\s+/g,' ')); }
+    else if (child.nodeType === 1){
+      const ln = child.localName;
+      const inner = fb2Inline(child, ctx);
+      if (ln === 'strong' || ln === 'b') s += `<strong>${inner}</strong>`;
+      else if (ln === 'emphasis' || ln === 'i') s += `<em>${inner}</em>`;
+      else if (ln === 'strikethrough') s += `<s>${inner}</s>`;
+      else if (ln === 'sub') s += `<sub>${inner}</sub>`;
+      else if (ln === 'sup') s += `<sup>${inner}</sup>`;
+      else if (ln === 'style') s += inner;
+      else if (ln === 'a'){ const href = imgHrefAttr(child); s += /^https?:/i.test(href) ? `<a href="${xmlEsc(href)}">${inner}</a>` : inner; }
+      else if (ln === 'image'){
+        const key = imgHrefAttr(child).replace(/^#/,'');
+        const res = ctx.bins.get(key);
+        if (res){ const id = addImage(ctx.book.images, res.mime, res.bytes); s += `<img src="bkimg:${id}" alt="">`; }
+      }
+      else s += inner;
+    }
+  }
+  return s;
+}
+function fb2Block(node, ctx){
+  const ln = node.localName;
+  const inner = fb2Inline(node, ctx);
+  if (ln === 'p') return inner.trim() ? `<p>${inner}</p>` : '';
+  if (ln === 'subtitle') return inner.trim() ? `<h2>${inner}</h2>` : '';
+  if (ln === 'empty-line') return '<p><br></p>';
+  if (ln === 'epigraph' || ln === 'cite') return inner.trim() ? `<blockquote>${inner}</blockquote>` : '';
+  if (ln === 'image'){
+    const key = imgHrefAttr(node).replace(/^#/,'');
+    const res = ctx.bins.get(key);
+    if (res){ const id = addImage(ctx.book.images, res.mime, res.bytes); return `<p><img src="bkimg:${id}" alt=""></p>`; }
+    return '';
+  }
+  if (ln === 'poem'){
+    const out = [];
+    for (const c of node.children){
+      if (c.localName === 'title'){ const t = fb2Inline(c, ctx).trim(); if (t) out.push(`<h3>${t}</h3>`); }
+      else if (c.localName === 'stanza'){
+        for (const v of c.children) if (v.localName === 'v'){ const t = fb2Inline(v, ctx).trim(); if (t) out.push(`<p>${t}</p>`); }
+      }
+    }
+    return out.join('\n');
+  }
+  if (ln === 'table'){
+    const rows = byLocal(node,'tr').map(tr => {
+      const cellHtml = byLocal(tr,'td').concat(byLocal(tr,'th')).map(td => `<td>${fb2Inline(td, ctx)}</td>`).join('');
+      return `<tr>${cellHtml}</tr>`;
+    }).join('');
+    return rows ? `<table>${rows}</table>` : '';
+  }
+  const t = node.textContent ? node.textContent.trim() : '';
+  return t ? `<p>${xmlEsc(t.replace(/\s+/g,' '))}</p>` : '';
+}
+function parseFb2(bytes, name){
+  const text = decodeTextAuto(bytes);
+  const doc = new (D.DOMParser || window.DOMParser)().parseFromString(text, 'application/xml');
+  if (doc.querySelector('parsererror')) throw new Error('badFb2');
+  const stem = name.replace(/\.[^.]+$/,'');
+  const ti = firstLocal(doc,'title-info');
+  let author = '';
+  if (ti){
+    const au = firstLocal(ti,'author');
+    if (au){
+      const fn = ((firstLocal(au,'first-name') || {}).textContent || '').trim();
+      const ln = ((firstLocal(au,'last-name') || {}).textContent || '').trim();
+      const nk = ((firstLocal(au,'nickname') || {}).textContent || '').trim();
+      author = [fn, ln].filter(Boolean).join(' ') || nk;
+    }
+  }
+  const title = ti ? (((firstLocal(ti,'book-title') || {}).textContent || '').trim()) : '';
+  const lang = ti ? (((firstLocal(ti,'lang') || {}).textContent || '').trim()) : '';
+  const book = newBook(title || stem, author, lang);
+  const bins = new Map();
+  for (const b of byLocal(doc,'binary')){
+    const id = b.getAttribute('id');
+    if (id) bins.set(id, { mime: b.getAttribute('content-type') || 'image/jpeg', bytes: base64ToBytes(b.textContent || '') });
+  }
+  if (ti){
+    const cp = firstLocal(ti,'coverpage');
+    if (cp){
+      const im = firstLocal(cp,'image');
+      const key = im ? imgHrefAttr(im).replace(/^#/,'') : '';
+      if (key && bins.get(key)) book.cover = bins.get(key);
+    }
+  }
+  const bodies = byLocal(doc,'body').filter(b => !/^(notes|footnotes)$/i.test(b.getAttribute('name') || ''));
+  const rootBody = bodies[0] || doc.documentElement;
+  const ctx = { book, bins };
+  const chapters = [];
+  const sections = byLocal(rootBody,'section');
+  if (sections.length){
+    for (const sec of sections){
+      const ttlEl = firstLocal(sec,'title');
+      const titleText = ttlEl ? (ttlEl.textContent || '').replace(/\s+/g,' ').trim().slice(0,120) : '';
+      const frag = [];
+      for (const child of Array.from(sec.children)){
+        if (child.localName === 'title' || child.localName === 'section') continue;
+        frag.push(fb2Block(child, ctx));
+      }
+      const html = frag.filter(Boolean).join('\n');
+      if (html.replace(/<[^>]+>/g,'').trim() || html.includes('<img') || titleText) chapters.push({ title: titleText, html: sanitizeHtml(html, { images: book.images, resMap: null, dir: '' }) });
+    }
+  } else {
+    const frag = [];
+    for (const child of Array.from(rootBody.children)) frag.push(fb2Block(child, ctx));
+    chapters.push({ title: '', html: frag.filter(Boolean).join('\n') });
+  }
+  book.chapters = chapters.length ? chapters : [{ title: '', html: `<p>${xmlEsc(stem)}</p>` }];
+  return book;
+}
+
+/* ── TXT ── */
+function linesToParas(lines){
+  const paras = [];
+  let cur = [];
+  for (const raw of lines){
+    const t = raw.replace(/\s+$/,'');
+    if (!t.trim()){ if (cur.length) paras.push(cur); cur = []; }
+    else cur.push(t.trim());
+  }
+  if (cur.length) paras.push(cur);
+  return paras.map(pl => {
+    const joined = pl.join(/[\u4e00-\u9fff]/.test(pl.join('')) ? '' : ' ');
+    return `<p>${xmlEsc(joined)}</p>`;
+  }).join('\n');
+}
+function parseTxt(bytes, name){
+  const text = decodeTextAuto(bytes).replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n');
+  const stem = name.replace(/\.[^.]+$/,'');
+  const book = newBook(stem, '', langQuick(text));
+  const lines = text.split('\n');
+  const chapters = [];
+  let cur = { title: '', lines: [] };
+  let hasContent = false;
+  for (const line of lines){
+    if (looksLikeChapter(line)){
+      if (hasContent) chapters.push(cur);
+      cur = { title: line.trim().slice(0,120), lines: [] };
+      hasContent = false;
+    } else {
+      cur.lines.push(line);
+      if (line.trim()) hasContent = true;
+    }
+  }
+  if (hasContent || cur.title) chapters.push(cur);
+  const out = [];
+  for (const c of chapters){
+    const html = linesToParas(c.lines);
+    if (!html && !c.title) continue;
+    out.push({ title: c.title, html });
+  }
+  if (!out.length){
+    /* no headings — maybe one huge text; single chapter */
+    out.push({ title: '', html: linesToParas(lines) });
+  }
+  /* split giant single chapter */
+  if (out.length === 1 && text.length > 90000){
+    const paras = out[0].html.split('\n');
+    const chunks = [];
+    let acc = [], accLen = 0;
+    for (const p of paras){
+      acc.push(p); accLen += p.length;
+      if (accLen > 60000){ chunks.push(acc); acc = []; accLen = 0; }
+    }
+    if (acc.length) chunks.push(acc);
+    if (chunks.length > 1){
+      book.chapters = chunks.map((ch, i) => ({ title: langQuick(text) === 'zh' ? `第${i+1}部分` : `Part ${i+1}`, html: ch.join('\n') }));
+      return book;
+    }
+  }
+  book.chapters = out;
+  return book;
+}
+
+/* ── Markdown / HTML file / DOCX ── */
+function miniMd(text){
+  const lines = text.split('\n');
+  const out = [];
+  let inCode = false;
+  for (const line of lines){
+    if (/^```/.test(line.trim())){ out.push(inCode ? '</code></pre>' : '<pre><code>'); inCode = !inCode; continue; }
+    if (inCode){ out.push(xmlEsc(line)); continue; }
+    const t = line.trim();
+    if (!t){ out.push('<br>'); continue; }
+    const h = /^(#{1,6})\s+(.*)$/.exec(t);
+    if (h) out.push(`<h${h[1].length}>${xmlEsc(h[2])}</h${h[1].length}>`);
+    else if (/^>\s?/.test(t)) out.push(`<blockquote>${xmlEsc(t.replace(/^>\s?/,''))}</blockquote>`);
+    else if (/^([-*+]|\d+[.)])\s+/.test(t)) out.push(`<li>${xmlEsc(t.replace(/^([-*+]|\d+[.)])\s+/,''))}</li>`);
+    else out.push(`<p>${xmlEsc(t)}</p>`);
+  }
+  return out.join('\n');
+}
+function parseMd(bytes, name){
+  const text = decodeTextAuto(bytes).replace(/^\uFEFF/,'');
+  const stem = name.replace(/\.[^.]+$/,'');
+  const book = newBook(stem, '', langQuick(text));
+  let html = '';
+  if (D.marked && typeof D.marked.parse === 'function'){
+    try { html = D.marked.parse(text); } catch(e){}
+  }
+  if (!html) html = miniMd(text);
+  const doc = parseDoc(html);
+  const body = doc.body || doc.documentElement;
+  /* first h1 = book title if unnamed */
+  const firstEl = body.firstElementChild;
+  if (firstEl && firstEl.tagName.toLowerCase() === 'h1'){
+    const t = firstEl.textContent.replace(/\s+/g,' ').trim();
+    if (t && book.title === stem) book.title = t;
+    firstEl.remove();
+  }
+  const chapters = splitByHeadings(body.innerHTML);
+  book.chapters = chapters.length ? chapters.map(c => ({ ...c, html: sanitizeHtml(c.html, { images: book.images, resMap: null, dir: '', keepRemote: true }) }))
+                                   : [{ title: '', html: sanitizeHtml(body.innerHTML, { images: book.images, resMap: null, dir: '', keepRemote: true }) }];
+  return book;
+}
+function parseHtmlFile(bytes, name){
+  const text = decodeTextAuto(bytes);
+  const doc = parseDoc(text);
+  const stem = name.replace(/\.[^.]+$/,'');
+  const title = ((doc.querySelector('title') || {}).textContent || '').trim() || stem;
+  const book = newBook(title, '', langQuick(text));
+  const body = doc.body || doc.documentElement;
+  const chapters = splitByHeadings(body.innerHTML);
+  book.chapters = chapters.length ? chapters.map(c => ({ ...c, html: sanitizeHtml(c.html, { images: book.images, resMap: null, dir: '', keepRemote: true }) }))
+                                   : [{ title: '', html: sanitizeHtml(body.innerHTML, { images: book.images, resMap: null, dir: '', keepRemote: true }) }];
+  return book;
+}
+async function parseDocx(bytes, name){
+  if (!D.mammoth) throw new Error('noMammoth');
+  const ab = bytes.buffer ? bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) : bytes;
+  const res = await D.mammoth.convertToHtml({ arrayBuffer: ab });
+  const stem = name.replace(/\.[^.]+$/,'');
+  const book = newBook(stem, '', '');
+  const html = (res && res.value) || '';
+  const chapters = splitByHeadings(html);
+  book.chapters = chapters.length ? chapters.map(c => ({ ...c, html: sanitizeHtml(c.html, { images: book.images, resMap: null, dir: '' }) }))
+                                   : [{ title: '', html: sanitizeHtml(html, { images: book.images, resMap: null, dir: '' }) }];
+  return book;
+}
+
+/* ── PDF ── */
+async function parsePdf(bytes, name){
+  if (!D.pdfjs) throw new Error('noPdfjs');
+  if (D.pdfWorker) D.pdfjs.GlobalWorkerOptions.workerSrc = D.pdfWorker;
+  const doc = await D.pdfjs.getDocument({ data: bytes, isEvalSupported: false }).promise;
+  let meta = null;
+  try { meta = await doc.getMetadata(); } catch(e){}
+  const stem = name.replace(/\.[^.]+$/,'');
+  const book = newBook(
+    (meta && meta.info && (meta.info.Title || '').trim()) || stem,
+    (meta && meta.info && (meta.info.Author || '').trim()) || '', '');
+  const pageCount = Math.min(doc.numPages, 3000);
+  const pages = [];
+  for (let p = 1; p <= pageCount; p++){
+    const page = await doc.getPage(p);
+    const tc = await page.getTextContent();
+    const lines = new Map();
+    for (const it of tc.items){
+      if (!it.str || !it.str.trim()) continue;
+      const y = Math.round(it.transform[5] / 2) * 2;
+      let arr = lines.get(y);
+      if (!arr){ arr = []; lines.set(y, arr); }
+      arr.push({ x: it.transform[4], s: it.str });
+    }
+    const ys = Array.from(lines.keys()).sort((a,b) => b - a);
+    pages.push(ys.map(y => lines.get(y).sort((a,b) => a.x - b.x).map(i => i.s).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean));
+  }
+  const destPage = async item => {
+    try {
+      let dest = item.dest;
+      if (typeof dest === 'string' && doc.getDestination) dest = await doc.getDestination(dest);
+      if (Array.isArray(dest) && dest[0] && doc.getPageIndex) return await doc.getPageIndex(dest[0]);
+    } catch(e){}
+    return null;
+  };
+  let bounds = [];
+  let outline = null;
+  try { outline = await doc.getOutline(); } catch(e){}
+  if (outline){
+    for (const it of outline){
+      const pi = await destPage(it);
+      const t = (it.title || '').trim().slice(0,120);
+      if (pi != null && t) bounds.push({ page: pi, title: t });
+    }
+  }
+  if (bounds.length < 2){
+    bounds = [];
+    pages.forEach((pl, pi) => {
+      for (const line of pl){
+        if (looksLikeChapter(line)){ bounds.push({ page: pi, title: line.slice(0,120) }); break; }
+      }
+    });
+  }
+  if (!bounds.length || bounds[0].page > 0) bounds.unshift({ page: 0, title: '' });
+  const merge = text => {
+    const out = [];
+    let cur = '';
+    const endsPara = s => /[。！？；!?;."”’]\s*$/.test(s);
+    for (const ln of text.split('\n')){
+      const t = ln.trim();
+      if (!t){ if (cur){ out.push(cur); cur = ''; } continue; }
+      if (!cur){ cur = t; continue; }
+      if (endsPara(cur) || cur.length < 25 || looksLikeChapter(t)){ out.push(cur); cur = t; }
+      else cur += (/[a-z0-9,;:]$/i.test(cur) && /^[a-z("']/.test(t)) ? ' ' + t : t;
+    }
+    if (cur) out.push(cur);
+    return out;
+  };
+  const chapters = [];
+  for (let bi = 0; bi < bounds.length; bi++){
+    const from = bounds[bi].page;
+    const to = bi + 1 < bounds.length ? bounds[bi+1].page : pageCount;
+    if (from >= to && chapters.length) continue;
+    const paras = merge(pages.slice(from, Math.max(to, from + 1)).flat().join('\n'));
+    const html = paras.map(p => `<p>${xmlEsc(p)}</p>`).join('\n');
+    if (paras.length || bounds[bi].title) chapters.push({ title: bounds[bi].title, html });
+  }
+  book.chapters = chapters.length ? chapters : [{ title: '', html: '<p></p>' }];
+  return book;
+}
+
+/* ── writers ── */
+const EPUB_CSS = `body{margin:5% 8%;line-height:1.8;font-family:serif}
+h1,h2,h3{line-height:1.4;margin:1.2em 0 .6em}
+p{margin:.6em 0;text-align:justify}
+img{max-width:100%;height:auto}
+blockquote{margin:1em 1.5em;color:#444;border-left:3px solid #bbb;padding-left:.8em}
+table{border-collapse:collapse}td,th{border:1px solid #999;padding:4px 8px}
+pre{background:#f5f5f5;padding:.8em;overflow-x:auto;white-space:pre-wrap}`;
+const HTML_CSS = `body{max-width:720px;margin:0 auto;padding:48px 24px;font:16px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",serif;color:#222;background:#fcfbf8}
+header.bm-head{text-align:center;margin-bottom:40px}
+header.bm-head h1{font-size:28px;margin:0 0 6px}
+header.bm-head .by{color:#777;margin:0}
+section.chap{margin:32px 0}
+h1,h2,h3{line-height:1.4}
+p{margin:.7em 0;text-align:justify}
+img{max-width:100%;height:auto}
+blockquote{border-left:3px solid #ccc;margin:1em 0;padding-left:1em;color:#555}
+pre{background:#f0eee9;padding:12px;border-radius:8px;overflow-x:auto;white-space:pre-wrap}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:5px 9px}`;
+function bkRewrite(html, map){
+  return html.replace(/src="bkimg:([^"]+)"/g, (m0, key) => map.has(key) ? `src="${map.get(key)}"` : ' src=""');
+}
+function xmlSerialize(node){
+  const xs = D.XMLSerializer || window.XMLSerializer;
+  return typeof xs === 'function' ? new xs().serializeToString(node) : xs.serializeToString(node);
+}
+function serializeBodyXhtml(html){
+  const doc = parseDoc(html);
+  const body = doc ? (doc.body || doc.documentElement) : null;
+  if (!body) return '';
+  return xmlSerialize(body)
+    .replace(/^<body[^>]*>/, '').replace(/<\/body>$/, '')
+    .replace(/ xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '').trim();
+}
+async function writeEpub(book){
+  if (!D.JSZip) throw new Error('noZip');
+  const zip = new D.JSZip();
+  zip.file('mimetype', 'application/epub+zip', { compression: 'STORE' });
+  zip.file('META-INF/container.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>');
+  zip.file('OEBPS/style.css', EPUB_CSS);
+  const lang = book.language || 'zh';
+  const title = book.title || 'Untitled';
+  const chapters = book.chapters.length ? book.chapters : [{ title: '', html: '<p></p>' }];
+  const bkMap = new Map();
+  for (const [id, im] of book.images) bkMap.set(id, `../images/${id}.${MIME_EXT[im.mime] || 'bin'}`);
+  const manifest = [], spine = [], navLis = [], ncxPts = [];
+  chapters.forEach((c, i) => {
+    const id = 'ch' + (i + 1), href = `text/${id}.xhtml`;
+    const ttl = c.title || (lang.startsWith('zh') ? `第${i + 1}章` : `Chapter ${i + 1}`);
+    const inner = serializeBodyXhtml(bkRewrite(c.html || '<p></p>', bkMap));
+    const hasH = chapterHasHeading(c.html || '');
+    const content = `<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE html>\n<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="${xmlEsc(lang)}" lang="${xmlEsc(lang)}">\n<head><title>${xmlEsc(ttl)}</title><link rel="stylesheet" type="text/css" href="../style.css"/></head>\n<body><section class="chapter">${hasH ? inner : `<h2>${xmlEsc(ttl)}</h2>\n${inner}`}</section></body></html>`;
+    zip.file('OEBPS/' + href, content);
+    manifest.push(`<item id="${id}" href="${href}" media-type="application/xhtml+xml"/>`);
+    spine.push(`<itemref idref="${id}"/>`);
+    navLis.push(`<li><a href="${href}">${xmlEsc(ttl)}</a></li>`);
+    ncxPts.push(`<navPoint id="np${i + 1}" playOrder="${i + 1}"><navLabel><text>${xmlEsc(ttl)}</text></navLabel><content src="${href}"/></navPoint>`);
+  });
+  for (const [id, im] of book.images){
+    const ext = MIME_EXT[im.mime] || 'bin';
+    zip.file(`OEBPS/images/${id}.${ext}`, im.bytes);
+    manifest.push(`<item id="img-${id}" href="images/${id}.${ext}" media-type="${im.mime}"/>`);
+  }
+  let metaCover = '', spineHead = '', manifestHead = '';
+  if (book.cover){
+    const ext = MIME_EXT[book.cover.mime] || 'jpg';
+    zip.file(`OEBPS/images/cover.${ext}`, book.cover.bytes);
+    zip.file('OEBPS/text/cover.xhtml', `<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE html>\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="${xmlEsc(lang)}"><head><title>Cover</title><link rel="stylesheet" type="text/css" href="../style.css"/></head><body style="text-align:center;margin:0"><img src="../images/cover.${ext}" alt="Cover" style="max-width:100%"/></body></html>`);
+    manifestHead = `<item id="cover-img" href="images/cover.${ext}" media-type="${book.cover.mime}"/>\n<item id="cover-page" href="text/cover.xhtml" media-type="application/xhtml+xml"/>`;
+    spineHead = `<itemref idref="cover-page" linear="yes"/>`;
+    metaCover = `<meta name="cover" content="cover-img"/>`;
+  }
+  const uid = 'urn:uuid:' + uuid();
+  const opf = `<?xml version="1.0" encoding="utf-8"?>\n<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="bookid" xml:lang="${xmlEsc(lang)}">\n<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n<dc:identifier id="bookid">${uid}</dc:identifier>\n<dc:title>${xmlEsc(title)}</dc:title>\n<dc:creator>${xmlEsc(book.author || 'Unknown')}</dc:creator>\n<dc:language>${xmlEsc(lang)}</dc:language>\n<meta property="dcterms:modified">${nowIso()}</meta>\n${metaCover}\n</metadata>\n<manifest>\n<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>\n<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>\n<item id="css" href="style.css" media-type="text/css"/>\n${manifestHead}${manifest.join('\n')}\n</manifest>\n<spine toc="ncx">\n${spineHead}${spine.join('\n')}\n</spine>\n</package>`;
+  zip.file('OEBPS/content.opf', opf);
+  zip.file('OEBPS/nav.xhtml', `<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE html>\n<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="${xmlEsc(lang)}"><head><title>Contents</title><link rel="stylesheet" type="text/css" href="style.css"/></head><body><nav epub:type="toc" id="toc"><h1>${lang.startsWith('zh') ? '目录' : 'Contents'}</h1><ol>\n${navLis.join('\n')}\n</ol></nav></body></html>`);
+  zip.file('OEBPS/toc.ncx', `<?xml version="1.0" encoding="utf-8"?>\n<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1"><head><meta name="dtb:uid" content="${uid}"/><meta name="dtb:depth" content="1"/><meta name="dtb:totalPageCount" content="0"/><meta name="dtb:maxPageNumber" content="0"/></head><docTitle><text>${xmlEsc(title)}</text></docTitle><navMap>\n${ncxPts.join('\n')}\n</navMap></ncx>`);
+  const bytes = await zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE', mimeType: 'application/epub+zip' });
+  return { bytes, mime: 'application/epub+zip', ext: 'epub' };
+}
+function writeMobi(book){
+  const title = book.title || 'Untitled';
+  const author = book.author || 'Unknown';
+  const kindleMime = m => m === 'image/jpeg' || m === 'image/png' || m === 'image/gif';
+  const recIndexOf = new Map();
+  const imageRecs = [];
+  if (book.cover && kindleMime(book.cover.mime)) imageRecs.push(book.cover.bytes);
+  for (const c of book.chapters){
+    const re = /src="bkimg:([^"]+)"/g;
+    let mm;
+    while ((mm = re.exec(c.html))){
+      const key = mm[1];
+      if (recIndexOf.has(key)) continue;
+      const im = book.images.get(key);
+      if (!im || !kindleMime(im.mime)) continue;
+      recIndexOf.set(key, imageRecs.length + 1);
+      imageRecs.push(im.bytes);
+    }
+  }
+  const body = book.chapters.map(c => {
+    const hasH = chapterHasHeading(c.html);
+    const inner = c.html.replace(/src="bkimg:([^"]+)"/g, (m0, key) => recIndexOf.has(key) ? `recindex="${String(recIndexOf.get(key)).padStart(5,'0')}"` : '');
+    const ttl = c.title || '';
+    return (!hasH && ttl) ? `<h2>${xmlEsc(ttl)}</h2>${inner}` : inner;
+  }).join('<mbp:pagebreak/>');
+  const html = `<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>${xmlEsc(title)}</title></head><body>${body}</body></html>`;
+  const htmlBytes = TE.encode(html);
+  const chunks = [];
+  for (let o = 0; o < htmlBytes.length; o += 4096) chunks.push(palmCompress(htmlBytes.subarray(o, Math.min(o + 4096, htmlBytes.length))));
+  const exthRecords = [];
+  const pushRec = (id, data) => {
+    const b = new Uint8Array(8 + data.length);
+    u32wr(b,0,id); u32wr(b,4,8 + data.length); b.set(data,8);
+    exthRecords.push(b);
+  };
+  pushRec(100, TE.encode(author));
+  pushRec(503, TE.encode(title));
+  if (imageRecs.length){ const b4 = new Uint8Array(4); u32wr(b4,0,0); pushRec(201, b4); }
+  let exthLen = 12;
+  exthRecords.forEach(r => exthLen += r.length);
+  const exthPad = (4 - (exthLen % 4)) % 4;
+  const exth = new Uint8Array(exthLen + exthPad);
+  exth.set(TE.encode('EXTH'), 0);
+  u32wr(exth,4,exth.length); u32wr(exth,8,exthRecords.length);
+  { let o = 12; for (const r of exthRecords){ exth.set(r,o); o += r.length; } }
+  const hdrLen = 232;
+  const titleBytes = TE.encode(title);
+  const toff = 16 + hdrLen + exth.length;
+  const firstImage = imageRecs.length ? 1 + chunks.length : null;
+  const r0 = new Uint8Array(toff + titleBytes.length);
+  u16wr(r0,0,2);
+  u32wr(r0,4,htmlBytes.length);
+  u16wr(r0,8,chunks.length);
+  u16wr(r0,10,4096);
+  u16wr(r0,12,0); u16wr(r0,14,0);
+  r0.set(TE.encode('MOBI'), 16);
+  u32wr(r0,0x14,hdrLen); u32wr(r0,0x18,2); u32wr(r0,0x1C,65001);
+  u32wr(r0,0x20,(Date.now() & 0x7FFFFFFF) >>> 0); u32wr(r0,0x24,6);
+  for (let o = 0x28; o < 0x50; o += 4) u32wr(r0,o,0xFFFFFFFF);
+  u32wr(r0,0x50,0xFFFFFFFF);
+  u32wr(r0,0x54,toff); u32wr(r0,0x58,titleBytes.length);
+  u32wr(r0,0x5C,0x0804); u32wr(r0,0x60,9); u32wr(r0,0x64,9);
+  u32wr(r0,0x68,6);
+  u32wr(r0,0x6C, firstImage != null ? firstImage : 0xFFFFFFFF);
+  u32wr(r0,0x70,0); u32wr(r0,0x74,0); u32wr(r0,0x78,0); u32wr(r0,0x7C,0);
+  u32wr(r0,0x80,0x40);
+  for (let o = 0x84; o < 0xF2; o++) r0[o] = 0xFF;
+  u16wr(r0,0xF2,0);
+  u32wr(r0,0xF4,0xFFFFFFFF);
+  r0.set(exth, 16 + hdrLen);
+  r0.set(titleBytes, toff);
+  const recs = [r0].concat(chunks, imageRecs);
+  const nameB = TE.encode(title).subarray(0,31);
+  const head = new Uint8Array(78);
+  head.set(nameB,0);
+  const ts = Math.floor(Date.now() / 1000);
+  u32wr(head,36,ts); u32wr(head,40,ts);
+  head.set(TE.encode('BOOK'),60); head.set(TE.encode('MOBI'),64);
+  u32wr(head,68,(Math.random() * 0x7FFFFFFF) | 0);
+  u16wr(head,76,recs.length);
+  const reclist = new Uint8Array(recs.length * 8 + 2);
+  let off = 78 + reclist.length;
+  recs.forEach((r, i) => {
+    u32wr(reclist, i*8, off);
+    const uidN = i + 2;
+    reclist[i*8+5] = (uidN >> 16) & 255; reclist[i*8+6] = (uidN >> 8) & 255; reclist[i*8+7] = uidN & 255;
+    off += r.length;
+  });
+  return { bytes: concatBytes([head, reclist].concat(recs)), mime: 'application/x-mobipocket-ebook', ext: 'mobi' };
+}
+function writeHtml(book){
+  const title = book.title || 'Untitled';
+  const dataUri = im => `data:${im.mime};base64,${bytesToBase64(im.bytes)}`;
+  const body = book.chapters.map(c => {
+    const hasH = chapterHasHeading(c.html);
+    const inner = bkRewrite(c.html, new Map(Array.from(book.images, ([k,v]) => [k, dataUri(v)])));
+    const ttl = c.title || '';
+    return `<section class="chap">${(!hasH && ttl) ? `<h2>${xmlEsc(ttl)}</h2>\n` : ''}${inner}</section>`;
+  }).join('\n<hr>\n');
+  const doc = `<!DOCTYPE html>\n<html lang="${xmlEsc(book.language || 'zh')}">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>${xmlEsc(title)}</title>\n<style>\n${HTML_CSS}\n</style>\n</head>\n<body>\n<header class="bm-head"><h1>${xmlEsc(title)}</h1>${book.author ? `<p class="by">— ${xmlEsc(book.author)}</p>` : ''}</header>\n${body}\n<footer style="text-align:center;color:#999;font-size:12px;margin:56px 0">Converted with KuiGe Ebook Converter · ebook-converter.kuige.me</footer>\n</body>\n</html>`;
+  return { text: doc, mime: 'text/html;charset=utf-8', ext: 'html' };
+}
+function writeTxt(book){
+  const parts = [];
+  book.chapters.forEach(c => {
+    const hasH = chapterHasHeading(c.html);
+    const text = htmlToText(c.html);
+    const seg = [];
+    if (c.title && !hasH) seg.push(c.title);
+    if (text) seg.push(text);
+    if (seg.length) parts.push(seg.join('\n\n'));
+  });
+  let out = '';
+  if (book.title) out += `${book.title}${book.author ? '\n' + book.author : ''}\n\n${'═'.repeat(32)}\n\n`;
+  out += parts.join('\n\n' + '─'.repeat(32) + '\n\n') + '\n';
+  return { text: out, mime: 'text/plain;charset=utf-8', ext: 'txt' };
+}
+function writeMd(book){
+  const parts = [];
+  book.chapters.forEach(c => {
+    const hasH = chapterHasHeading(c.html);
+    const md = htmlToMd(c.html);
+    let s = '';
+    if (c.title && !hasH) s += `## ${c.title}\n\n`;
+    if (md.trim()) s += md.trim();
+    if (s.trim()) parts.push(s.trim());
+  });
+  let out = `# ${book.title || 'Untitled'}\n\n${book.author ? `*${book.author}*\n\n` : ''}`;
+  out += parts.join('\n\n---\n\n') + '\n';
+  return { text: out, mime: 'text/markdown;charset=utf-8', ext: 'md' };
+}
+function htmlToFb2Blocks(html, imgMap){
+  const doc = parseDoc(html);
+  const body = doc.body || doc.documentElement;
+  const out = [];
+  const inline = (node, list) => {
+    for (const child of Array.from(node.childNodes)){
+      if (child.nodeType === 3){ const t = child.textContent.replace(/\s+/g,' ').trim(); if (t) list.push(xmlEsc(t)); }
+      else if (child.nodeType === 1){
+        const tag = child.tagName.toLowerCase();
+        if (tag === 'br') continue;
+        const inner = [];
+        inline(child, inner);
+        const s = inner.join(' ');
+        if (tag === 'strong' || tag === 'b') list.push(`<strong>${s}</strong>`);
+        else if (tag === 'em' || tag === 'i') list.push(`<emphasis>${s}</emphasis>`);
+        else if (tag === 's' || tag === 'del') list.push(`<strikethrough>${s}</strikethrough>`);
+        else if (tag === 'sub') list.push(`<sub>${s}</sub>`);
+        else if (tag === 'sup') list.push(`<sup>${s}</sup>`);
+        else if (tag === 'img'){
+          const m = /bkimg:([^"']+)/.exec(child.getAttribute('src') || '');
+          if (m && imgMap.has(m[1])) list.push(`<image l:href="#${imgMap.get(m[1])}"/>`);
+        }
+        else if (tag === 'a'){ const href = child.getAttribute('href') || ''; list.push(/^https?:/i.test(href) ? `<a l:href="${xmlEsc(href)}">${s}</a>` : s); }
+        else if (s) list.push(s);
+      }
+    }
+  };
+  const walkBlocks = (node) => {
+    for (const child of Array.from(node.childNodes)){
+      if (child.nodeType === 3){ const t = child.textContent.replace(/\s+/g,' ').trim(); if (t) out.push(`<p>${xmlEsc(t)}</p>`); continue; }
+      if (child.nodeType !== 1) continue;
+      const tag = child.tagName.toLowerCase();
+      if (/^h[1-6]$/.test(tag)){ const l = []; inline(child, l); if (l.length) out.push(`<subtitle>${l.join(' ')}</subtitle>`); }
+      else if (tag === 'p' || tag === 'div'){ const l = []; inline(child, l); if (l.length) out.push(`<p>${l.join(' ')}</p>`); }
+      else if (tag === 'br') out.push('<empty-line/>');
+      else if (tag === 'blockquote'){ const l = []; inline(child, l); if (l.length) out.push(`<cite><p>${l.join(' ')}</p></cite>`); }
+      else if (tag === 'ul' || tag === 'ol'){
+        let n = 1;
+        for (const li of child.children){
+          if (li.tagName.toLowerCase() !== 'li') continue;
+          const l = []; inline(li, l);
+          out.push(`<p>${tag === 'ol' ? xmlEsc(n + '. ') : '• '}${l.join(' ')}</p>`);
+          n++;
+        }
+      }
+      else if (tag === 'img'){
+        const m = /bkimg:([^"']+)/.exec(child.getAttribute('src') || '');
+        if (m && imgMap.has(m[1])) out.push(`<image l:href="#${imgMap.get(m[1])}"/>`);
+      }
+      else if (tag === 'hr') out.push('<empty-line/>');
+      else if (tag === 'pre'){ const l = []; inline(child, l); if (l.length) out.push(`<p><code>${l.join(' ')}</code></p>`); }
+      else if (tag === 'table'){
+        for (const tr of child.querySelectorAll('tr')){
+          const cells = Array.from(tr.children).map(td => { const l = []; inline(td, l); return l.join(' '); });
+          out.push(`<p>${xmlEsc(cells.join(' | '))}</p>`);
+        }
+      }
+      else walkBlocks(child);
+    }
+  };
+  walkBlocks(body);
+  return out.join('\n');
+}
+function writeFb2(book){
+  const title = book.title || 'Untitled';
+  const nameParts = (book.author || '').trim().split(/\s+/).filter(Boolean);
+  const authorXml = nameParts.length
+    ? `<author>${nameParts.length > 1 ? `<first-name>${xmlEsc(nameParts[0])}</first-name><last-name>${xmlEsc(nameParts.slice(1).join(' '))}</last-name>` : `<nickname>${xmlEsc(nameParts[0])}</nickname>`}</author>`
+    : '<author><nickname>Unknown</nickname></author>';
+  const used = new Map();
+  const imgMap = new Map();
+  if (book.cover && ['image/jpeg','image/png','image/gif'].includes(book.cover.mime)){
+    used.set('cover', book.cover);
+  }
+  for (const c of book.chapters){
+    const re = /src="bkimg:([^"]+)"/g;
+    let mm;
+    while ((mm = re.exec(c.html))){
+      if (imgMap.has(mm[1])) continue;
+      const im = book.images.get(mm[1]);
+      if (!im || !['image/jpeg','image/png','image/gif'].includes(im.mime)) continue;
+      const nid = 'b' + used.size;
+      used.set(nid, im);
+      imgMap.set(mm[1], nid);
+    }
+  }
+  const sections = book.chapters.map(c => {
+    const hasH = chapterHasHeading(c.html);
+    const blocks = htmlToFb2Blocks(c.html, imgMap);
+    const ttl = c.title && !hasH ? `<title><p>${xmlEsc(c.title)}</p></title>` : '';
+    return `<section>${ttl}${blocks}</section>`;
+  }).join('\n');
+  let bins = '';
+  for (const [id, im] of used) bins += `<binary id="${id}" content-type="${im.mime}">${bytesToBase64(im.bytes)}</binary>\n`;
+  const doc = `<?xml version="1.0" encoding="utf-8"?>\n<FictionBook xmlns="http://www.gribuser.ru/xml/fictionbook/2.0" xmlns:l="http://www.w3.org/1999/xlink">\n<description>\n<title-info>\n${authorXml}\n<book-title>${xmlEsc(title)}</book-title>\n<lang>${xmlEsc(book.language || 'zh')}</lang>\n</title-info>\n<document-info><id>urn:uuid:${uuid()}</id><program-used>KuiGe Ebook Converter (ebook-converter.kuige.me)</program-used></document-info>\n</description>\n${used.has('cover') ? '<coverpage><image l:href="#cover"/></coverpage>' : ''}\n<body>\n${sections}\n</body>\n${bins}</FictionBook>`;
+  return { text: doc, mime: 'application/xml', ext: 'fb2' };
+}
+
+/* ── dispatch ── */
+async function parseBook(input){
+  const name = input.name || 'book';
+  const bytes = input.bytes instanceof Uint8Array ? input.bytes : new Uint8Array(input.bytes);
+  if (bytes.length > 160 * 1024 * 1024) throw new Error('tooBig');
+  if (!bytes.length) throw new Error('badFile');
+  let ext = (name.toLowerCase().match(/\.([a-z0-9]+)$/) || [])[1] || '';
+  if (!KNOWN_EXT.has(ext)){
+    if (bytes[0] === 0x50 && bytes[1] === 0x4B) ext = 'epub';
+    else if (latin1(bytes,60,8).startsWith('BOOKMOBI')) ext = 'mobi';
+    else if (bytes.length > 4 && bytes[0] === 0x25 && bytes[1] === 0x50) ext = 'pdf';
+    else if (latin1(bytes,0,5).includes('<?xml') || /<FictionBook/i.test(latin1(bytes,0,400))) ext = 'fb2';
+    else ext = 'txt';
+  }
+  switch(ext){
+    case 'epub': return parseEpub(bytes, name);
+    case 'mobi': case 'azw3': case 'azw': case 'prc': return parseMobi(bytes, name);
+    case 'fb2': return parseFb2(bytes, name);
+    case 'txt': case 'text': return parseTxt(bytes, name);
+    case 'html': case 'htm': case 'xhtml': return parseHtmlFile(bytes, name);
+    case 'md': case 'markdown': return parseMd(bytes, name);
+    case 'pdf': return parsePdf(bytes, name);
+    case 'docx': return parseDocx(bytes, name);
+    default: throw new Error('unsupported');
+  }
+}
+async function writeBook(book, fmt){
+  switch(fmt){
+    case 'epub': return writeEpub(book);
+    case 'mobi': return writeMobi(book);
+    case 'html': return writeHtml(book);
+    case 'txt': return writeTxt(book);
+    case 'md': return writeMd(book);
+    case 'fb2': return writeFb2(book);
+    default: throw new Error('badFmt');
+  }
+}
+
+Object.assign(E, {
+  parseBook, writeBook, parseEpub, parseMobi, parseFb2, parseTxt, parseMd, parseHtmlFile, parsePdf, parseDocx,
+  writeEpub, writeMobi, writeHtml, writeTxt, writeMd, writeFb2,
+  sanitizeHtml, htmlToText, htmlToMd, trimTrailing, splitByHeadings, looksLikeChapter, linesToParas, miniMd,
+  _palmCompress: palmCompress, _palmDecompress: palmDecompress, _loadHuffCdic: loadHuffCdic, _parseMobiHeader: parseMobiHeader
+});
+})();
+</script>
+<script type="module">
+/* ── BookMill UI ── */
+const $ = id => document.getElementById(id);
+const BM = window.BM_ENGINE;
+
+const I18N = {
+zh: {
+  title: '魁歌在线电子书格式转换工具 — EPUB/MOBI/AZW3/PDF 免费互转',
+  desc: '免费在线电子书格式转换工具：EPUB、MOBI、AZW3、FB2、PDF、DOCX、TXT、HTML、Markdown 互转，输出 EPUB/MOBI/HTML/TXT/Markdown/FB2。所有转换在浏览器本地完成，文件不上传，无需注册。',
+  brand: '魁歌电子书转换', brandSub: '在线格式转换', kgEntry: 'IconGems · 免费图标库',
+  navApp: '开始转换', navFormats: '支持格式', navGuide: '转换指南', navFaq: 'FAQ',
+  eyebrow: '纯浏览器本地转换 · 魁歌出品',
+  h1: '在线电子书格式转换，文件不上传',
+  heroSub: 'EPUB、MOBI、AZW3、FB2、PDF、DOCX、TXT、HTML、Markdown 互转。所有解析与转换都在你的浏览器里完成，无需注册、没有水印。',
+  b1: '文件不上传', b2: '免费无限制', b3: '9 种输入 · 6 种输出', b4: '支持批量',
+  dropT1: '拖入电子书文件，或点击选择', dropT2: '可一次选择多个文件批量转换 · 也可以 Ctrl/⌘+V 粘贴文件',
+  metaTitleL: '书名（可选，覆盖原数据）', metaTitlePh: '留空则使用文件自带书名',
+  metaAuthorL: '作者（可选）', metaAuthorPh: '留空则使用文件自带作者',
+  outLbl: '转换为：', goBtn: '开始转换', clearBtn: '清空列表',
+  engineNote: '100% 本地运行：转换过程不产生任何网络上传，断网也能用。',
+  howT: '三步完成转换', howD: '不需要安装 Calibre，不需要注册账号，浏览器打开就能用。',
+  s1t: '拖入文件', s1d: '把 EPUB、MOBI、PDF 等文件拖到上方虚线框，支持一次多选。',
+  s2t: '选择目标格式', s2d: '可选 EPUB / MOBI / HTML / TXT / Markdown / FB2，还可以顺手修正书名和作者。',
+  s3t: '下载结果', s3d: '转换完成后逐个下载，文件直接保存在你的设备上。',
+  fmtT: '支持的转换矩阵', fmtD: '横向是输入格式，纵向是输出格式。EPUB 是最通用的中间格式，任何输入都推荐先转 EPUB。',
+  mtxIn: '输入 ↓ / 输出 →', mtxPdf: '(提取文字)',
+  mtxNote: '* MOBI 输出采用 PalmDOC 压缩的 MOBI6 格式，兼容 Kindle 全系及主流阅读软件；WEBP/SVG 图片在 MOBI 输出中会被跳过。扫描版 PDF 无文字层，无法转换。',
+  gdT: '电子书格式转换指南', gdD: '关于格式选择、Kindle 推送和 DRM 的实用说明。',
+  g1t: '为什么推荐 EPUB？',
+  g1a: 'EPUB 是国际数字出版论坛（W3C）维护的开放标准，苹果图书、Google 图书、微信读书、Calibre、KOReader 等几乎全部现代阅读器都原生支持。它本质上是一个 ZIP 包，内含 XHTML 章节和样式表，支持回流排版，字号、字体、行距都能随阅读器调整。',
+  g1b: 'MOBI6 是 Kindle 早期的私有格式，功能停留在 2011 年：不支持现代 CSS、表格能力有限。除非你的目标是老款 Kindle，否则 EPUB 都是更好的归宿。',
+  g2t: '怎么把书传到 Kindle？',
+  g2a: '三种方式：① USB 连接电脑，把文件拷进 Kindle 的 documents 文件夹；② 把文件作为附件发到你 Kindle 账户专属的「发送至 Kindle」邮箱；③ 手机/电脑安装「发送至 Kindle」App 直接上传。较新的 Kindle 固件已直接支持 EPUB，无需转换成 MOBI。',
+  g2b: '提示：「发送至 Kindle」对 EPUB 会自动做格式优化，MOBI 则按原样导入。',
+  g3t: '关于 DRM：为什么有的书转不了？',
+  g3a: '从 Amazon、Google Play 图书等商店购买的电子书大多带 DRM（数字版权管理），与你购买的账号绑定。转换或去除 DRM 在大多数国家/地区违反服务条款甚至法律，本工具不支持、也不会尝试解析加密文件——遇到时会明确报错。',
+  g3b: '可以放心转换的：自己制作的文档、公版书（古腾堡计划等）、从支持无 DRM 下载的商店（如 Leanpub、Standard Ebooks）购买的书。',
+  g4t: '隐私：本地转换意味着什么？',
+  g4a: '传统在线转换网站会把你的文件上传到他们的服务器——商业合同草稿、未出版书稿、个人日记都可能因此离开你的设备。本站的全部解析代码运行在你的浏览器标签页里，文件永远不会被发送到任何服务器。',
+  g4b: '不信可以验证：打开浏览器开发者工具的「网络」面板再执行转换，看不到任何上传请求；或者直接断网使用。',
+  faqT: '常见问题',
+  q1: '转换时我的电子书会被上传到服务器吗？',
+  a1: '不会。本工具的所有解析与转换都在你的浏览器里完成，文件不会离开你的设备。你可以断网后使用，也可以在浏览器开发者工具的网络面板里确认没有任何文件上传请求。',
+  q2: '为什么有些 MOBI/AZW3 文件无法转换？',
+  a2: '最常见的原因是 DRM 版权保护：从商店购买并绑定账号的电子书通常加了加密，任何工具都不能也不应该转换受 DRM 保护的文件。本工具只支持无 DRM 的文件（自己制作的、公共领域的、或明确允许转换的电子书）。',
+  q3: 'EPUB 和 MOBI 应该选哪个？',
+  a3: 'EPUB 是国际通用的开放格式，苹果图书、Google 图书、微信读书、Calibre 及绝大多数安卓阅读器都支持，优先选 EPUB。MOBI 主要用于向 Kindle 老设备推送；较新的 Kindle 固件也已直接支持 EPUB，可通过「发送至 Kindle」服务推送。',
+  q4: 'PDF 转成电子书后排版乱了怎么办？',
+  a4: 'PDF 是按固定页面排版的格式，转成可回流排版的电子书时只能提取文字流，原页面布局、多栏、图片位置都可能变化。建议转换后检查章节划分；扫描版 PDF 没有文字层，无法提取内容。',
+  q5: '转换后的 MOBI 文件如何传到 Kindle？',
+  a5: '可以用 USB 数据线把文件拷贝到 Kindle 的 documents 文件夹，也可以把文件发送到你的「发送至 Kindle」邮箱，或使用 Amazon 网页版/App 的发送至 Kindle 上传功能。',
+  q6: '支持批量转换吗？有没有文件大小限制？',
+  a6: '支持。一次可以拖入多个文件按同一目标格式依次转换。转换在本地进行，速度取决于你的设备性能；建议单个文件不超过 150MB，超大电子书在低端设备上可能较慢。',
+  footBrand: '魁歌在线电子书格式转换工具', footHome: '魁歌主页',
+  stWait: '待转换', stParse: '解析中…', stWrite: '写入中…', stDone: '完成', stFail: '失败', stBad: '不支持',
+  dl: '下载', rm: '移除',
+  engineLoading: '正在加载转换引擎…',
+  errDrm: '此文件带 DRM 版权保护，无法转换', errBig: '文件过大（>150MB）', errLib: '转换引擎加载失败，请检查网络后重试',
+  errBad: '文件无法识别或已损坏', errFail: '转换失败',
+  emptyList: '还没有添加文件'
+},
+en: {
+  title: 'KuiGe Ebook Converter — Online Ebook Conversion, No Upload',
+  desc: 'Free online ebook converter: EPUB, MOBI, AZW3, FB2, PDF, DOCX, TXT, HTML, Markdown to EPUB/MOBI/HTML/TXT/Markdown/FB2. Everything runs locally in your browser — files never leave your device.',
+  brand: 'KuiGe Ebook Converter', brandSub: 'In-browser conversion', kgEntry: 'IconGems · Free Icons',
+  navApp: 'Convert', navFormats: 'Formats', navGuide: 'Guide', navFaq: 'FAQ',
+  eyebrow: '100% in-browser · by KuiGe',
+  h1: 'Convert ebook formats in your browser. No upload.',
+  heroSub: 'EPUB, MOBI, AZW3, FB2, PDF, DOCX, TXT, HTML and Markdown — converted to EPUB, MOBI, HTML, TXT, Markdown or FB2. All parsing and conversion happens locally in your browser. No signup, no watermark.',
+  b1: 'Files never uploaded', b2: 'Free, no limits', b3: '9 inputs · 6 outputs', b4: 'Batch support',
+  dropT1: 'Drop ebook files here, or click to browse', dropT2: 'Select multiple files for batch conversion · or paste with Ctrl/⌘+V',
+  metaTitleL: 'Title (optional, overrides metadata)', metaTitlePh: 'Leave empty to keep the original title',
+  metaAuthorL: 'Author (optional)', metaAuthorPh: 'Leave empty to keep the original author',
+  outLbl: 'Convert to:', goBtn: 'Convert', clearBtn: 'Clear list',
+  engineNote: '100% local: conversion produces zero network uploads. Works offline.',
+  howT: 'Convert in three steps', howD: 'No Calibre to install, no account to create — it just works in your browser.',
+  s1t: 'Drop files', s1d: 'Drag EPUB, MOBI, PDF and other files into the dashed area above. Multiple selection supported.',
+  s2t: 'Pick a target format', s2d: 'Choose EPUB / MOBI / HTML / TXT / Markdown / FB2, and fix the title & author if needed.',
+  s3t: 'Download', s3d: 'When conversion finishes, download the files straight to your device.',
+  fmtT: 'Supported conversion matrix', fmtD: 'Rows are input formats, columns are output formats. EPUB is the most universal target — when in doubt, convert to EPUB.',
+  mtxIn: 'Input ↓ / Output →', mtxPdf: '(text extracted)',
+  mtxNote: '* MOBI output uses PalmDOC-compressed MOBI6, compatible with all Kindle generations and mainstream readers. WEBP/SVG images are skipped in MOBI output. Scanned PDFs without a text layer cannot be converted.',
+  gdT: 'Ebook conversion guide', gdD: 'Practical notes on format choice, Kindle delivery and DRM.',
+  g1t: 'Why EPUB is the right default',
+  g1a: 'EPUB is the open standard maintained by W3C. Apple Books, Google Play Books, Calibre, KOReader and virtually every modern reader app support it natively. Under the hood it is a ZIP of XHTML chapters and stylesheets with reflowable text — font size, typeface and spacing adapt to your reader.',
+  g1b: 'MOBI6 is Amazon\'s legacy format, frozen around 2011: no modern CSS, limited tables. Unless you specifically target old Kindle models, EPUB is the better home.',
+  g2t: 'How do I get books onto my Kindle?',
+  g2a: 'Three ways: ① connect via USB and copy the file into the Kindle\'s documents folder; ② email it to your account\'s Send-to-Kindle address; ③ use the Send to Kindle app. Recent Kindle firmware supports EPUB directly — no MOBI conversion needed.',
+  g2b: 'Tip: Send to Kindle automatically optimizes EPUB files; MOBI files are imported as-is.',
+  g3t: 'About DRM: why won\'t some books convert?',
+  g3a: 'Ebooks bought from Amazon, Google Play Books and most stores are wrapped in DRM tied to your account. Stripping or converting DRM violates terms of service and, in many jurisdictions, the law. This tool does not support — and will not attempt — to decrypt such files; you\'ll get a clear error instead.',
+  g3b: 'Safe to convert: your own documents, public-domain books (Project Gutenberg etc.), and books from DRM-free stores such as Leanpub or Standard Ebooks.',
+  g4t: 'Privacy: what "local conversion" means',
+  g4a: 'Traditional online converters upload your files to their servers — contracts, unpublished manuscripts, personal notes can all leave your device. Every line of parsing code on this site runs inside your browser tab; your files are never sent anywhere.',
+  g4b: 'Verify it yourself: open your browser\'s Network panel and run a conversion — you\'ll see no upload requests. Or simply go offline and convert.',
+  faqT: 'FAQ',
+  q1: 'Are my ebooks uploaded to a server during conversion?',
+  a1: 'No. All parsing and conversion happens inside your browser; files never leave your device. You can use it offline, or confirm in the browser\'s Network panel that no upload requests are made.',
+  q2: 'Why won\'t some MOBI/AZW3 files convert?',
+  a2: 'The most common reason is DRM: store-bought ebooks are usually encrypted and tied to your account, and no tool may convert them. This tool only supports DRM-free files (your own creations, public-domain books, or ebooks explicitly licensed for conversion).',
+  q3: 'Should I choose EPUB or MOBI?',
+  a3: 'EPUB is the universal open format — Apple Books, Google Play Books, Calibre and most Android readers support it. Prefer EPUB. MOBI mainly matters for older Kindles; recent Kindle firmware already supports EPUB via Send to Kindle.',
+  q4: 'The layout looks broken after converting from PDF.',
+  a4: 'PDF is a fixed-page format; converting to a reflowable ebook extracts only the text flow, so page layout, multi-column text and image positions may change. Check the chapter split after converting. Scanned PDFs have no text layer and cannot be extracted.',
+  q5: 'How do I get the converted MOBI onto my Kindle?',
+  a5: 'Copy it to the Kindle\'s documents folder over USB, email it to your Send-to-Kindle address, or upload it with the Send to Kindle app/website.',
+  q6: 'Is batch conversion supported? Any size limit?',
+  a6: 'Yes — drop multiple files and they convert one by one into the same target format. Conversion runs locally, so speed depends on your device; keep single files under 150MB.',
+  footBrand: 'KuiGe Ebook Converter', footHome: 'KuiGe Home',
+  stWait: 'Queued', stParse: 'Parsing…', stWrite: 'Writing…', stDone: 'Done', stFail: 'Failed', stBad: 'Unsupported',
+  dl: 'Download', rm: 'Remove',
+  engineLoading: 'Loading conversion engine…',
+  errDrm: 'This file is DRM-protected and cannot be converted', errBig: 'File too large (>150MB)', errLib: 'Engine failed to load — check your network and retry',
+  errBad: 'File could not be recognized or is corrupted', errFail: 'Conversion failed',
+  emptyList: 'No files added yet'
+}};
+let lang = 'zh';
+const T = k => (I18N[lang] && I18N[lang][k]) || k;
+
+/* ── theme ── */
+let theme = localStorage.getItem('bm-theme') || 'auto';
+function applyTheme(){
+  const dark = theme === 'dark' || (theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.classList.toggle('dark', dark);
+  localStorage.setItem('bm-theme', theme);
+}
+$('themeBtn').addEventListener('click', () => {
+  theme = { auto: 'light', light: 'dark', dark: 'auto' }[theme] || 'auto';
+  applyTheme();
+});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (theme === 'auto') applyTheme(); });
+
+/* ── i18n ── */
+function detectLang(){
+  const p = new URLSearchParams(location.search).get('lang');
+  if (p === 'en' || p === 'zh') return p;
+  const ls = localStorage.getItem('bm-lang');
+  if (ls === 'en' || ls === 'zh') return ls;
+  return (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en';
+}
+function applyLang(l){
+  lang = l;
+  const dict = I18N[l];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (k in dict) el.textContent = dict[k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const k = el.getAttribute('data-i18n-ph');
+    if (k in dict) el.setAttribute('placeholder', dict[k]);
+  });
+  document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+  document.title = dict.title;
+  const setM = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
+  setM('meta[name="description"]', dict.desc);
+  setM('meta[property="og:title"]', dict.title);
+  setM('meta[property="og:description"]', dict.desc);
+  setM('meta[name="twitter:title"]', dict.title);
+  setM('meta[name="twitter:description"]', dict.desc);
+  localStorage.setItem('bm-lang', l);
+  const url = new URL(location.href);
+  if (l === 'zh') url.searchParams.delete('lang'); else url.searchParams.set('lang', 'en');
+  history.replaceState(null, '', url.pathname + (url.search || '') + url.hash);
+  $('langBtn').textContent = l === 'zh' ? 'EN' : '中文';
+}
+$('langBtn').addEventListener('click', () => applyLang(lang === 'zh' ? 'en' : 'zh'));
+
+/* ── CDN libs ── */
+const CDN = {
+  jszip: [
+    'https://fastly.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
+    'https://gcore.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
+    'https://unpkg.com/jszip@3.10.1/dist/jszip.min.js',
+    'https://registry.npmmirror.com/jszip/3.10.1/files/dist/jszip.min.js'],
+  marked: [
+    'https://fastly.jsdelivr.net/npm/marked@12.0.2/marked.min.js',
+    'https://gcore.jsdelivr.net/npm/marked@12.0.2/marked.min.js',
+    'https://unpkg.com/marked@12.0.2/marked.min.js',
+    'https://registry.npmmirror.com/marked/12.0.2/files/marked.min.js'],
+  mammoth: [
+    'https://fastly.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js',
+    'https://gcore.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js',
+    'https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js',
+    'https://registry.npmmirror.com/mammoth/1.8.0/files/mammoth.browser.min.js'],
+  pdfjs: [
+    'https://fastly.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js',
+    'https://gcore.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js',
+    'https://unpkg.com/pdfjs-dist@3.11.174/legacy/build/pdf.min.js',
+    'https://registry.npmmirror.com/pdfjs-dist/3.11.174/files/legacy/build/pdf.min.js'],
+  pdfworker: [
+    'https://fastly.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js',
+    'https://gcore.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js',
+    'https://unpkg.com/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js',
+    'https://registry.npmmirror.com/pdfjs-dist/3.11.174/files/legacy/build/pdf.worker.min.js']
+};
+function loadScript(url, timeout){
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    const t = setTimeout(() => { s.remove(); rej(new Error('timeout')); }, timeout || 15000);
+    s.src = url;
+    s.onload = () => { clearTimeout(t); res(url); };
+    s.onerror = () => { clearTimeout(t); s.remove(); rej(new Error('load')); };
+    document.head.appendChild(s);
+  });
+}
+const libCache = new Map();
+async function loadLibUrl(name){
+  if (libCache.has(name)) return libCache.get(name);
+  let lastErr = null;
+  for (const url of CDN[name]){
+    try { await loadScript(url); libCache.set(name, url); return url; } catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error('libFail');
+}
+async function ensureDeps(inputExt){
+  const needs = new Set();
+  if (state.fmt === 'epub') needs.add('jszip');
+  if (inputExt === 'epub') needs.add('jszip');
+  if (inputExt === 'md') needs.add('marked');
+  if (inputExt === 'docx') needs.add('mammoth');
+  if (inputExt === 'pdf'){ needs.add('pdfjs'); needs.add('pdfworker'); }
+  if (!needs.size) return;
+  showEngine(T('engineLoading'));
+  try {
+    if (needs.has('jszip')){ await loadLibUrl('jszip'); BM.setDeps({ JSZip: window.JSZip }); }
+    if (needs.has('marked')){ await loadLibUrl('marked'); BM.setDeps({ marked: window.marked }); }
+    if (needs.has('mammoth')){ await loadLibUrl('mammoth'); BM.setDeps({ mammoth: window.mammoth }); }
+    if (needs.has('pdfjs')){
+      const mainUrl = await loadLibUrl('pdfjs');
+      const famIdx = CDN.pdfjs.indexOf(mainUrl);
+      let workerUrl = null;
+      for (let i = 0; i < CDN.pdfworker.length; i++){
+        try { workerUrl = await loadScript(CDN.pdfworker[(famIdx + i) % CDN.pdfworker.length]); break; } catch(e){}
+      }
+      BM.setDeps({ pdfjs: window.pdfjsLib, pdfWorker: workerUrl });
+    }
+  } catch(e){ throw new Error('libFail'); }
+  finally { hideEngine(); }
+}
+const enginePill = $('enginePill');
+function showEngine(txt){ enginePill.textContent = txt; enginePill.hidden = false; }
+function hideEngine(){ enginePill.hidden = true; }
+
+/* ── file queue ── */
+const state = { items: [], results: [], fmt: 'epub', busy: false };
+let uid = 0;
+const EXT_ICON = { epub:'📕', mobi:'📗', azw3:'📗', azw:'📗', prc:'📗', fb2:'📕', pdf:'📙', docx:'📘', txt:'📄', html:'🌐', htm:'🌐', xhtml:'🌐', md:'📝', markdown:'📝' };
+const KNOWN_EXT = new Set(['epub','mobi','azw3','azw','prc','fb2','txt','html','htm','xhtml','md','markdown','pdf','docx']);
+const extOf = n => ((n || '').toLowerCase().match(/\.([a-z0-9]+)$/) || [])[1] || '';
+function fmtSize(n){
+  if (n < 1024) return n + ' B';
+  if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1048576).toFixed(2) + ' MB';
+}
+function addFiles(list){
+  for (const f of list){
+    if (!f || !f.name) continue;
+    const ext = extOf(f.name);
+    state.items.push({ id: ++uid, file: f, name: f.name, size: f.size,
+      status: KNOWN_EXT.has(ext) ? 'wait' : 'bad', reason: KNOWN_EXT.has(ext) ? '' : 'stBad' });
+  }
+  renderFiles();
+  updateGo();
+}
+function setStatus(it, status, reasonKey){
+  it.status = status;
+  if (reasonKey) it.reason = reasonKey;
+  renderFiles();
+}
+function renderFiles(){
+  const box = $('fileList');
+  box.innerHTML = '';
+  if (!state.items.length) return;
+  for (const it of state.items){
+    const row = document.createElement('div');
+    row.className = 'fitem';
+    const pillCls = it.status === 'ok' ? 'ok' : it.status === 'bad' ? 'bad' : it.status === 'work' ? 'work' : 'wait';
+    const pillTxt = it.reason ? T(it.reason) : T('stWait');
+    const pill = it.status === 'wait' ? '' : `<span class="pill ${pillCls}">${pillTxt}</span>`;
+    row.innerHTML = `<span class="ficon">${EXT_ICON[extOf(it.name)] || '📄'}</span>
+      <div class="fmeta"><div class="fname"></div><div class="fsub">${fmtSize(it.size)} · ${(extOf(it.name) || '?').toUpperCase()}${pill}</div></div>
+      <button class="btn ghost small" type="button">×</button>`;
+    row.querySelector('.fname').textContent = it.name;
+    row.querySelector('button').addEventListener('click', () => {
+      state.items = state.items.filter(x => x !== it);
+      renderFiles(); updateGo();
+    });
+    box.appendChild(row);
+  }
+}
+function updateGo(){
+  $('goBtn').disabled = state.busy || !state.items.length;
+}
+
+/* ── output ── */
+function outName(item, book, ext){
+  const base = ($('metaTitle').value.trim() || book.title || item.name.replace(/\.[^.]+$/,'') || 'book')
+    .replace(/[\\/:*?"<>|\x00-\x1f]/g,'').trim().slice(0,80) || 'book';
+  const taken = new Set(state.results.map(r => r.name));
+  let name = base + '.' + ext, n = 2;
+  while (taken.has(name)) name = `${base} (${n++}).${ext}`;
+  return name;
+}
+function errText(err){
+  const m = (err && err.message) || '';
+  if (m.includes('DRM')) return T('errDrm');
+  if (m === 'tooBig') return T('errBig');
+  if (['noZip','noPdfjs','noMammoth','libFail'].includes(m)) return T('errLib');
+  if (['unsupported','badCompression','badHuff','notMobi','badFile','badZip','noOpf','badFb2'].includes(m)) return T('errBad');
+  return m ? T('errFail') + ' · ' + m : T('errFail');
+}
+function setProg(p){ $('progBar').style.width = Math.max(2, Math.min(100, p)) + '%'; }
+function addResultRow(name, blob, it){
+  const div = document.createElement('div');
+  div.className = 'ritem';
+  div.innerHTML = `<span class="ficon">✅</span><div class="rmeta"><div class="rname"></div><div class="rsub"></div></div><a class="btn small primary" download></a>`;
+  div.querySelector('.rname').textContent = name;
+  div.querySelector('.rsub').textContent = `${fmtSize(blob.size)} · ${it.name}`;
+  const a = div.querySelector('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.textContent = T('dl');
+  $('results').appendChild(div);
+}
+async function convertAll(){
+  if (state.busy || !state.items.length) return;
+  state.busy = true;
+  state.results = [];
+  $('results').innerHTML = '';
+  $('prog').hidden = false;
+  setProg(0);
+  updateGo();
+  const total = state.items.length;
+  let done = 0;
+  for (const it of state.items){
+    try {
+      const ext = extOf(it.name);
+      if (!KNOWN_EXT.has(ext)){ setStatus(it, 'bad', 'stBad'); continue; }
+      setStatus(it, 'work', 'stParse');
+      await ensureDeps(ext);
+      const bytes = new Uint8Array(await it.file.arrayBuffer());
+      const book = await BM.parseBook({ bytes, name: it.name });
+      const mt = $('metaTitle').value.trim();
+      const ma = $('metaAuthor').value.trim();
+      if (mt) book.title = mt;
+      if (ma) book.author = ma;
+      setStatus(it, 'work', 'stWrite');
+      await ensureDeps(null);
+      const res = await BM.writeBook(book, state.fmt);
+      const blob = new Blob([res.bytes || res.text], { type: res.mime });
+      const name = outName(it, book, res.ext);
+      state.results.push({ name, blob, size: blob.size });
+      addResultRow(name, blob, it);
+      setStatus(it, 'ok', 'stDone');
+    } catch(err){
+      console.warn('convert failed:', it.name, err);
+      setStatus(it, 'bad', null);
+      it.reasonText = errText(err);
+      const row = $('fileList').children[state.items.indexOf(it)];
+      if (row){ const pill = row.querySelector('.pill'); if (pill){ pill.textContent = it.reasonText; } }
+    }
+    done++;
+    setProg(done / total * 100);
+  }
+  state.busy = false;
+  updateGo();
+  setTimeout(() => { $('prog').hidden = true; }, 700);
+}
+$('goBtn').addEventListener('click', convertAll);
+$('clearBtn').addEventListener('click', () => {
+  state.items = [];
+  state.results = [];
+  $('results').innerHTML = '';
+  renderFiles(); updateGo();
+});
+
+/* format chips */
+document.querySelectorAll('.chip[data-fmt]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip[data-fmt]').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    state.fmt = chip.getAttribute('data-fmt');
+    updateGo();
+  });
+});
+
+/* input wiring */
+const drop = $('drop'), fileInput = $('fileInput');
+drop.addEventListener('click', () => fileInput.click());
+drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files || [])); fileInput.value = ''; });
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => addFiles(Array.from((e.dataTransfer && e.dataTransfer.files) || [])));
+document.addEventListener('paste', e => {
+  const files = Array.from((e.clipboardData && e.clipboardData.files) || []);
+  if (files.length){ e.preventDefault(); addFiles(files); }
+});
+
+/* boot */
+applyTheme();
+applyLang(detectLang());
+renderFiles();
+updateGo();
+loadLibUrl('jszip').then(() => BM.setDeps({ JSZip: window.JSZip })).catch(() => {});
+
+window.__BM = { state, convertAll, applyLang, addFiles, setFmt: f => { state.fmt = f; }, engine: BM, getLang: () => lang };
+</script>
+<script async defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "948f2535a9dd4775a436c677b3c950e4"}'></script>
+</body>
+</html>
